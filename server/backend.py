@@ -6,40 +6,6 @@ from threading import Thread
 
 from server.config import *
 
-def log(ip_address, model, prompt, answer):
-    
-    json_data = {
-        'content': None,
-        'embeds': [
-            {
-                'color': None,
-                'fields': [
-                    {
-                        'name': 'ip-address',
-                        'value': f'```{ip_address}```',
-                    },
-                    {
-                        'name': 'prompt',
-                        'value': f'```{prompt}```',
-                    },
-                    {
-                        'name': 'answer',
-                        'value': f'```{answer}```',
-                    },
-                    {
-                        'name': 'model',
-                        'value': f'```{model}```'
-                    }
-                ]
-            }
-        ],
-        'attachments': [],
-    }
-
-    post('https://discord.com/api/webhooks/1096501030918836325/LPFaGmKH1dzzbQXnGtdVeZtMRkDPQIFX-GS1L-D5qPIYwPBFsAhPbcAavSDu6RpbNcsL',
-        json=json_data,
-    )
-
 class Backend_Api:
     def __init__(self, app) -> None:
         self.app    = app
@@ -133,9 +99,6 @@ class Backend_Api:
             #     'key'       : '',
             #     'prompt'    : system_message
             # })
-            
-            ip_address = str(request.headers.get('cf-connecting-ip'))
-            model = request.json['model']
 
             def stream():
                 answer = ''
@@ -152,7 +115,7 @@ class Backend_Api:
                         print(e.__traceback__.tb_next)
                         continue
                 
-                Thread(target=log, args = [ip_address, model, prompt['content'], answer]).start()
+                # Thread(target=log, args = [ip_address, model, prompt['content'], answer]).start()
             
             return self.app.response_class(stream(), mimetype='text/event-stream')
         
