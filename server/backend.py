@@ -1,37 +1,36 @@
-from json     import dumps, loads
 from datetime import datetime
 from requests import get, post
-from flask    import request
-from threading import Thread
+from flask import request
 
 from server.config import *
 
+
 class Backend_Api:
     def __init__(self, app) -> None:
-        self.app    = app
+        self.app = app
         self.routes = {
             '/backend-api/v2/conversation': {
-                'function': self._conversation, 
+                'function': self._conversation,
                 'methods': ['POST']
             },
         }
-    
+
     def _conversation(self):
 
         try:
-            jailbreak       = request.json['jailbreak']
+            jailbreak = request.json['jailbreak']
             internet_access = request.json['meta']['content']['internet_access']
-            _conversation   = request.json['meta']['content']['conversation']
-            prompt          = request.json['meta']['content']['parts'][0]
-            current_date    = datetime.now().strftime("%Y-%m-%d")
-            system_message  = f'You are GPT-3.5 also known as ChatGPT, a large language model trained by OpenAI. Stricktly follow the users instructions. Knowledge cutoff: 2021-09-01 Current date: {current_date}'
-            
+            _conversation = request.json['meta']['content']['conversation']
+            prompt = request.json['meta']['content']['parts'][0]
+            current_date = datetime.now().strftime("%Y-%m-%d")
+            system_message = f'You are GPT-3.5 also known as ChatGPT, a large language model trained by OpenAI. Stricktly follow the users instructions. Knowledge cutoff: 2021-09-01 Current date: {current_date}'
+
             if '0040' in request.json['model']:
-                system_message  = f'You are GPT-4, newest generation of OpenAI GPT series. Stricktly follow the users instructions. Knowledge cutoff: 2021-09-01 Current date: {current_date}'
+                system_message = f'You are GPT-4, newest generation of OpenAI GPT series. Stricktly follow the users instructions. Knowledge cutoff: 2021-09-01 Current date: {current_date}'
 
             extra = []
             if internet_access:
-                search = get('https://ddg-api.herokuapp.com/search', params = {
+                search = get('https://ddg-api.herokuapp.com/search', params={
                     'query': prompt["content"],
                     'limit': 3,
                 })
@@ -47,8 +46,10 @@ class Backend_Api:
 
                 extra = [{'role': 'user', 'content': blob}]
 
-            conversation = [{'role': 'system', 'content': system_message}] +  extra  + special_instructions[jailbreak] +  _conversation + [prompt]
-            
+            conversation = [{'role': 'system', 'content': system_message}] + \
+                extra + special_instructions[jailbreak] + \
+                _conversation + [prompt]
+
             headers = {
                 'authority': 'www.sqlchat.ai',
                 'accept': '*/*',
@@ -64,13 +65,14 @@ class Backend_Api:
 
             data = {
                 'messages': conversation,
-                'openAIApiConfig':{
-                    'key':'',
-                    'endpoint':''
+                'openAIApiConfig': {
+                    'key': '',
+                    'endpoint': ''
                 }
             }
 
-            gpt_resp = post('https://www.sqlchat.ai/api/chat', headers=headers, json=data, stream=True)
+            gpt_resp = post('https://www.sqlchat.ai/api/chat',
+                            headers=headers, json=data, stream=True)
 
             # headers = {
             #     'authority': 'www.t3nsor.tech',
@@ -92,7 +94,7 @@ class Backend_Api:
 
             # gpt_resp = post('https://www.t3nsor.tech/api/chat', headers = headers, stream = True, json = {
             #     'model': {
-            #         'id'   : 'gpt-3.5-turbo', 
+            #         'id'   : 'gpt-3.5-turbo',
             #         'name' : 'Default (GPT-3.5)'
             #     },
             #     'messages'  : conversation,
@@ -109,20 +111,20 @@ class Backend_Api:
 
                     except GeneratorExit:
                         break
-                    
+
                     except Exception as e:
                         print(e)
                         print(e.__traceback__.tb_next)
                         continue
-                
+
                 # Thread(target=log, args = [ip_address, model, prompt['content'], answer]).start()
-            
+
             return self.app.response_class(stream(), mimetype='text/event-stream')
-        
+
         except Exception as e:
             print(e)
             print(e.__traceback__.tb_next)
             return {
-                '_action' : '_ask',
-                'success' : False,
-                "error"   : f"an error occured {str(e)}"}, 400
+                '_action': '_ask',
+                'success': False,
+                "error": f"an error occured {str(e)}"}, 400

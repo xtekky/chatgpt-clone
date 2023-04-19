@@ -25,6 +25,7 @@ if __name__ == '__main__':
             view_func = backend_api.routes[route]['function'],
             methods   = backend_api.routes[route]['methods'],
         )
-    
+
+    print(f"Running on port {config['port']}")
     app.run(**config)
-    print('running on port 1337')
+    print(f"Closing port {config['port']}")
