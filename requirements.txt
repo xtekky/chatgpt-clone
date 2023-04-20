@@ -1,2 +1,5 @@
-flask
-requests
+Install Python-> https://www.python.org/downloads/
+
+run in the console:
+pip install flask
+pip install requests
