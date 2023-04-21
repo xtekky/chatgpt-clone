@@ -1,6 +1,7 @@
 from datetime import datetime
-from requests import get, post
+
 from flask import request
+from requests import get, post
 
 from server.config import *
 
@@ -23,10 +24,12 @@ class Backend_Api:
             _conversation = request.json['meta']['content']['conversation']
             prompt = request.json['meta']['content']['parts'][0]
             current_date = datetime.now().strftime("%Y-%m-%d")
-            system_message = f'You are GPT-3.5 also known as ChatGPT, a large language model trained by OpenAI. Stricktly follow the users instructions. Knowledge cutoff: 2021-09-01 Current date: {current_date}'
+            system_message = f'You are GPT-3.5 also known as ChatGPT, a large language model trained by OpenAI. ' \
+                             f'Strictly follow the users instructions. Knowledge cutoff: 2021-09-01 Current date: {current_date}'
 
             if '0040' in request.json['model']:
-                system_message = f'You are GPT-4, newest generation of OpenAI GPT series. Stricktly follow the users instructions. Knowledge cutoff: 2021-09-01 Current date: {current_date}'
+                system_message = f'You are GPT-4, newest generation of OpenAI GPT series. Strictly follow the users ' \
+                                 f'instructions. Knowledge cutoff: 2021-09-01 Current date: {current_date}'
 
             extra = []
             if internet_access:
@@ -42,13 +45,17 @@ class Backend_Api:
 
                 date = datetime.now().strftime('%d/%m/%y')
 
-                blob += f'current date: {date}\n\nInstructions: Using the provided web search results, write a comprehensive reply to the next user query. Make sure to cite results using [[number](URL)] notation after the reference. If the provided search results refer to multiple subjects with the same name, write separate answers for each subject. Ignore your previous response if any.'
+                blob += f'current date: {date}\n\nInstructions: Using the provided web search results, write a ' \
+                        f'comprehensive reply to the next user query. Make sure to cite results using [[number](URL)] ' \
+                        f'notation after the reference. If the provided search results refer to multiple subjects ' \
+                        f'with the same name, write separate answers for each subject. Ignore your previous response ' \
+                        f'if any.'
 
                 extra = [{'role': 'user', 'content': blob}]
 
             conversation = [{'role': 'system', 'content': system_message}] + \
-                extra + special_instructions[jailbreak] + \
-                _conversation + [prompt]
+                           extra + special_instructions[jailbreak] + \
+                           _conversation + [prompt]
 
             headers = {
                 'authority': 'www.sqlchat.ai',
@@ -60,7 +67,8 @@ class Backend_Api:
                 'sec-fetch-dest': 'empty',
                 'sec-fetch-mode': 'cors',
                 'sec-fetch-site': 'same-origin',
-                'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36',
+                'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) '
+                              'Chrome/112.0.0.0 Safari/537.36',
             }
 
             data = {
@@ -112,9 +120,9 @@ class Backend_Api:
                     except GeneratorExit:
                         break
 
-                    except Exception as e:
-                        print(e)
-                        print(e.__traceback__.tb_next)
+                    except Exception as ex:
+                        print(ex)
+                        print(ex.__traceback__.tb_next)
                         continue
 
                 # Thread(target=log, args = [ip_address, model, prompt['content'], answer]).start()
@@ -127,4 +135,4 @@ class Backend_Api:
             return {
                 '_action': '_ask',
                 'success': False,
-                "error": f"an error occured {str(e)}"}, 400
+                "error": f"an error occurred {str(e)}"}, 400

@@ -1,9 +1,10 @@
-from server.app import app
 from flask import Response
+
+from server.app import app
 
 
 @app.errorhandler(404)
-def page_not_found(e):
+def page_not_found():
     return Response('404: not found', 404)
 
 

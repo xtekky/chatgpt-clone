@@ -1,5 +1,5 @@
-window.dc674d      = window.fetch
-const n            = window.navigator
+window.dc674d = window.fetch
+const n = window.navigator
 const browser_data = {
     a: n.userAgent,
     b: n.platform,
@@ -28,10 +28,10 @@ function shift(s) {
         /[A-Z0-9+/=]/gi,
         (c) =>
             "nea97XU2LmOy1tD40jo-JvRhpbuFfgT3CKW6NIwArPqQlxskZ5c8zd.YVMiEBSHG="[
-            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=".indexOf(
-                c
-            )
-        ]
+                "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=".indexOf(
+                    c
+                )
+                ]
     );
 }
 
@@ -52,22 +52,22 @@ const b64 = (u8) => {
 };
 
 async function get_shape() {
-    let key   = `chatgpt.rip.6675636b206f6666202122a72425262f28293d3f`
-    plain_sec = JSON.stringify({
+    let key = `chatgpt.rip.6675636b206f6666202122a72425262f28293d3f`
+    let plain_sec = JSON.stringify({
         ...shuffle(browser_data),
         timestamp: Date.now()
     })
 
-    return shift(await b64(encrypt(plain_sec, key)))
+    return shift(b64(encrypt(plain_sec, key)))
 }
 
 window.fetch = async function (url, config) {
-    shape_info = await get_shape()
+    let shape_info = await get_shape()
 
     return window.dc674d(url, {
         ...config,
         headers: {
-            ...{ "x-shape-info": shape_info },
+            ...{"x-shape-info": shape_info},
             ...((config && config.headers) || {})
         }
     })
@@ -80,7 +80,7 @@ function key_scheduling(key) {
     for (let j = 0; j < 256; j++) {
         i = (i + sched[j] + key[j % key.length]) % 256
 
-        let tmp  = sched[j]
+        let tmp = sched[j]
         sched[j] = sched[i]
         sched[i] = tmp
     }
@@ -96,7 +96,7 @@ function* stream_generation(sched) {
         i = (1 + i) % 256
         j = (sched[i] + j) % 256
 
-        let tmp  = sched[j]
+        let tmp = sched[j]
         sched[j] = sched[i]
         sched[i] = tmp
 
@@ -105,18 +105,18 @@ function* stream_generation(sched) {
 }
 
 function encrypt(text, key) {
-    let textArr   = [...text].map((char) => char.charCodeAt())
-    let keyArr    = [...key].map((char) => char.charCodeAt())
-    let sched     = key_scheduling(keyArr)
+    let textArr = [...text].map((char) => char.charCodeAt(0))
+    let keyArr = [...key].map((char) => char.charCodeAt(0))
+    let sched = key_scheduling(keyArr)
     let keyStream = stream_generation(sched)
 
     return textArr.map((char) => char ^ keyStream.next().value)
 }
 
 function decrypt(ciphertext, key) {
-    let keyArr      = [...key].map((char) => char.charCodeAt())
-    let sched       = key_scheduling(keyArr)
-    let keyStream   = stream_generation(sched)
+    let keyArr = [...key].map((char) => char.charCodeAt(0))
+    let sched = key_scheduling(keyArr)
+    let keyStream = stream_generation(sched)
 
     return ciphertext
         .map((char) => String.fromCharCode(char ^ keyStream.next().value))

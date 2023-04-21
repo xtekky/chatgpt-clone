@@ -1,6 +1,7 @@
-from flask import render_template, send_file, redirect
-from time import time
 from os import urandom
+from time import time
+
+from flask import render_template, send_file, redirect
 
 
 class Website:
@@ -32,7 +33,8 @@ class Website:
         return render_template('index.html', chat_id=conversation_id)
 
     def _index(self):
-        return render_template('index.html', chat_id=f'{urandom(4).hex()}-{urandom(2).hex()}-{urandom(2).hex()}-{urandom(2).hex()}-{hex(int(time() * 1000))[2:]}')
+        return render_template('index.html',
+                               chat_id=f'{urandom(4).hex()}-{urandom(2).hex()}-{urandom(2).hex()}-{urandom(2).hex()}-{hex(int(time() * 1000))[2:]}')
 
     def _assets(self, folder: str, file: str):
         try:
