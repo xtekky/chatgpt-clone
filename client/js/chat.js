@@ -8,6 +8,8 @@ const stop_generating   = document.querySelector(`.stop_generating`);
 const send_button       = document.querySelector(`#send-button`);
 let   prompt_lock       = false
 
+hljs.addPlugin(new CopyButtonPlugin());
+
 const format = (text) => {
     return text.replace(/(?:\r\n|\r|\n)/g, '<br>')
 }
