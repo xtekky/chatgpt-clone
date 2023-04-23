@@ -9,6 +9,7 @@ I am very busy at the moment so I would be very thankful for contributions and P
 - [ ] speech output and input (elevenlabs; ex: https://github.com/cogentapps/chat-with-gpt)
 - [ ] load files, ex: https://github.com/mayooear/gpt4-pdf-chatbot-langchain
 - [ ] better documentation and cross-platfotm (docker for ex)
+- [ ] use react / faster backend language ? (newbies may be more confused and discouraged to use it)
  
 # ChatGPT Clone
 feel free to improve the code / suggest improvements
