@@ -1,3 +1,5 @@
+patched at the moment  
+
 # ChatGPT Clone
 feel free to improve the code / suggest improvements
 
