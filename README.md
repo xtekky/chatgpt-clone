@@ -1,5 +1,14 @@
-patched at the moment  
+patched at the moment, you can submit a pr adding a model from: https://github.com/xtekky/gpt4free
 
+## To do
+- [ ] Double confirm when deleting conversation
+- [ ] loading / exporting a conversation
+- [x] remember user preferences
+- [ ] theme changer
+- [ ] speech output and input (elevenlabs; ex: https://github.com/cogentapps/chat-with-gpt)
+- [ ] load files, ex: https://github.com/mayooear/gpt4-pdf-chatbot-langchain
+- [ ] better documentation and cross-platfotm (docker for ex)
+ 
 # ChatGPT Clone
 feel free to improve the code / suggest improvements
 
