@@ -58,3 +58,9 @@ To run the application, make sure the virtual environment is active and run the 
 ```
 python run.py
 ```
+
+### Docker
+The easiest way to run ChatGPT Clone is by using docker
+```
+docker-compose up
+```
