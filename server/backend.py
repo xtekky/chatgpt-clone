@@ -1,8 +1,11 @@
-from datetime import datetime
-from requests import get, post
 from flask import request
 
-from server.config import *
+from datetime import datetime
+from requests import get
+from requests import post 
+
+from server.config import models 
+from server.config import special_instructions
 
 
 class Backend_Api:
@@ -74,34 +77,6 @@ class Backend_Api:
             gpt_resp = post('https://www.sqlchat.ai/api/chat',
                             headers=headers, json=data, stream=True)
 
-            # headers = {
-            #     'authority': 'www.t3nsor.tech',
-            #     'accept': '*/*',
-            #     'accept-language': 'en,fr-FR;q=0.9,fr;q=0.8,es-ES;q=0.7,es;q=0.6,en-US;q=0.5,am;q=0.4,de;q=0.3',
-            #     'cache-control': 'no-cache',
-            #     'content-type': 'application/json',
-            #     'origin': 'https://www.t3nsor.tech',
-            #     'pragma': 'no-cache',
-            #     'referer': 'https://www.t3nsor.tech/',
-            #     'sec-ch-ua': '"Chromium";v="112", "Google Chrome";v="112", "Not:A-Brand";v="99"',
-            #     'sec-ch-ua-mobile': '?0',
-            #     'sec-ch-ua-platform': '"macOS"',
-            #     'sec-fetch-dest': 'empty',
-            #     'sec-fetch-mode': 'cors',
-            #     'sec-fetch-site': 'same-origin',
-            #     'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36',
-            # }
-
-            # gpt_resp = post('https://www.t3nsor.tech/api/chat', headers = headers, stream = True, json = {
-            #     'model': {
-            #         'id'   : 'gpt-3.5-turbo',
-            #         'name' : 'Default (GPT-3.5)'
-            #     },
-            #     'messages'  : conversation,
-            #     'key'       : '',
-            #     'prompt'    : system_message
-            # })
-
             def stream():
                 answer = ''
                 for chunk in gpt_resp.iter_content(chunk_size=1024):
@@ -116,9 +91,7 @@ class Backend_Api:
                         print(e)
                         print(e.__traceback__.tb_next)
                         continue
-
-                # Thread(target=log, args = [ip_address, model, prompt['content'], answer]).start()
-
+                        
             return self.app.response_class(stream(), mimetype='text/event-stream')
 
         except Exception as e:
