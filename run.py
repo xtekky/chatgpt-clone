@@ -1,5 +1,4 @@
 from server.app     import app
-from server.errors  import *
 from server.website import Website
 from server.backend import Backend_Api
 
