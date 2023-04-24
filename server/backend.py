@@ -1,10 +1,11 @@
+from json import dumps
+from time import time
 from flask import request
-
+from hashlib import sha256
 from datetime import datetime
 from requests import get
 from requests import post 
 
-from server.config import models 
 from server.config import special_instructions
 
 
@@ -15,11 +16,10 @@ class Backend_Api:
             '/backend-api/v2/conversation': {
                 'function': self._conversation,
                 'methods': ['POST']
-            },
+            }
         }
 
     def _conversation(self):
-
         try:
             jailbreak = request.json['jailbreak']
             internet_access = request.json['meta']['content']['internet_access']
@@ -53,29 +53,20 @@ class Backend_Api:
                 extra + special_instructions[jailbreak] + \
                 _conversation + [prompt]
 
+            timestamp = int(time() * 1000)
             headers = {
-                'authority': 'www.sqlchat.ai',
-                'accept': '*/*',
-                'accept-language': 'en,fr-FR;q=0.9,fr;q=0.8,es-ES;q=0.7,es;q=0.6,en-US;q=0.5,am;q=0.4,de;q=0.3',
-                'content-type': 'text/plain;charset=UTF-8',
-                'origin': 'https://www.sqlchat.ai',
-                'referer': 'https://www.sqlchat.ai/',
-                'sec-fetch-dest': 'empty',
-                'sec-fetch-mode': 'cors',
-                'sec-fetch-site': 'same-origin',
+                'authority' : 'chatforai.com',
+                'origin'    : 'https://chatforai.com',
+                'referer'   : 'https://chatforai.com/',
                 'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36',
             }
 
-            data = {
-                'messages': conversation,
-                'openAIApiConfig': {
-                    'key': '',
-                    'endpoint': ''
-                }
-            }
-
-            gpt_resp = post('https://www.sqlchat.ai/api/chat',
-                            headers=headers, json=data, stream=True)
+            gpt_resp = post('https://chatforai.com/api/generate', headers=headers, stream=True, 
+                data = dumps(separators=(',', ':'), obj={
+                    'messages': conversation,
+                    'time': timestamp,
+                    'pass': None,
+                    'sign': sha256(f'{timestamp}:{conversation[-1]["content"]}:k6zeE77ge7XF'.encode()).hexdigest(), 'key': ''}))
 
             def stream():
                 answer = ''
