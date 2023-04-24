@@ -26,10 +26,10 @@ class Backend_Api:
             _conversation = request.json['meta']['content']['conversation']
             prompt = request.json['meta']['content']['parts'][0]
             current_date = datetime.now().strftime("%Y-%m-%d")
-            system_message = f'You are GPT-3.5 also known as ChatGPT, a large language model trained by OpenAI. Stricktly follow the users instructions. Knowledge cutoff: 2021-09-01 Current date: {current_date}'
+            system_message = f'You are GPT-3.5 also known as ChatGPT, a large language model trained by OpenAI. Strictly follow the users instructions. Knowledge cutoff: 2021-09-01 Current date: {current_date}'
 
             if '0040' in request.json['model']:
-                system_message = f'You are GPT-4, newest generation of OpenAI GPT series. Stricktly follow the users instructions. Knowledge cutoff: 2021-09-01 Current date: {current_date}'
+                system_message = f'You are GPT-4, newest generation of OpenAI GPT series. Strictly follow the users instructions. Knowledge cutoff: 2021-09-01 Current date: {current_date}'
 
             extra = []
             if internet_access:
