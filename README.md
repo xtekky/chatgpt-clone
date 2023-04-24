@@ -1,4 +1,4 @@
-patched at the moment, you can submit a pr adding a model from: https://github.com/xtekky/gpt4free   
+working again ; ) 
 I am very busy at the moment so I would be very thankful for contributions and PR's
 
 ## To do
