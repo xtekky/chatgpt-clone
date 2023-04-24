@@ -100,4 +100,4 @@ class Backend_Api:
             return {
                 '_action': '_ask',
                 'success': False,
-                "error": f"an error occured {str(e)}"}, 400
+                "error": f"an error occurred {str(e)}"}, 400
