@@ -5,13 +5,15 @@ from hashlib import sha256
 from datetime import datetime
 from requests import get
 from requests import post 
+from json     import loads
 
 from server.config import special_instructions
 
 
 class Backend_Api:
-    def __init__(self, app) -> None:
+    def __init__(self, app, config: dict) -> None:
         self.app = app
+        self.openai_key = config['openai_key']
         self.routes = {
             '/backend-api/v2/conversation': {
                 'function': self._conversation,
@@ -26,10 +28,7 @@ class Backend_Api:
             _conversation = request.json['meta']['content']['conversation']
             prompt = request.json['meta']['content']['parts'][0]
             current_date = datetime.now().strftime("%Y-%m-%d")
-            system_message = f'You are GPT-3.5 also known as ChatGPT, a large language model trained by OpenAI. Strictly follow the users instructions. Knowledge cutoff: 2021-09-01 Current date: {current_date}'
-
-            if '0040' in request.json['model']:
-                system_message = f'You are GPT-4, newest generation of OpenAI GPT series. Strictly follow the users instructions. Knowledge cutoff: 2021-09-01 Current date: {current_date}'
+            system_message = f'You are ChatGPT also known as ChatGPT, a large language model trained by OpenAI. Strictly follow the users instructions. Knowledge cutoff: 2021-09-01 Current date: {current_date}'
 
             extra = []
             if internet_access:
@@ -53,28 +52,22 @@ class Backend_Api:
                 extra + special_instructions[jailbreak] + \
                 _conversation + [prompt]
 
-            timestamp = int(time() * 1000)
-            headers = {
-                'authority' : 'chatforai.com',
-                'origin'    : 'https://chatforai.com',
-                'referer'   : 'https://chatforai.com/',
-                'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36',
-            }
-
-            gpt_resp = post('https://chatforai.com/api/generate', headers=headers, stream=True, 
-                data = dumps(separators=(',', ':'), obj={
-                    'messages': conversation,
-                    'time': timestamp,
-                    'pass': None,
-                    'sign': sha256(f'{timestamp}:{conversation[-1]["content"]}:k6zeE77ge7XF'.encode()).hexdigest(), 'key': ''}))
+            gpt_resp = post('https://api.openai.com/v1/chat/completions',
+                headers = {'Authorization': 'Bearer %s' % self.openai_key}, 
+                json    = {
+                    'model'             : request.json['model'], 
+                    'messages'          : conversation,
+                    'stream'            : True}, stream = True)
 
             def stream():
-                answer = ''
-                for chunk in gpt_resp.iter_content(chunk_size=1024):
+                for chunk in gpt_resp.iter_lines():
                     try:
-                        answer += chunk.decode()
-                        yield chunk.decode()
+                        decoded_line = loads(chunk.decode("utf-8").split("data: ")[1])
+                        token = decoded_line["choices"][0]['delta'].get('content')
 
+                        if token != None: 
+                            yield token
+                            
                     except GeneratorExit:
                         break
 
