@@ -397,13 +397,14 @@ window.onload = async () => {
     message_input.addEventListener(`keydown`, async (evt) => {
         if (prompt_lock) return;
         if (evt.keyCode === 13 && !evt.shiftKey) {
+            evt.preventDefault();
             console.log('pressed enter');
             await handle_ask();
         } else {
             message_input.style.removeProperty('height');
             message_input.style.height = (message_input.scrollHeight+4) + 'px';
         }
-    });
+    });    
     
     send_button.addEventListener(`click`, async () => {
         console.log('clicked send');
