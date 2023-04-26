@@ -10,6 +10,8 @@ let   prompt_lock       = false
 
 hljs.addPlugin(new CopyButtonPlugin());
 
+
+
 const format = (text) => {
     return text.replace(/(?:\r\n|\r|\n)/g, '<br>')
 }
@@ -205,7 +207,6 @@ const ask_gpt = async (message) => {
 const clear_conversations = async () => {
     const elements = box_conversations.childNodes;
     let   index    = elements.length;
-
     if (index > 0 ) {
         while (index--) {
             const element = elements[index];
@@ -224,15 +225,39 @@ const clear_conversation = async () => {
     }
 }
 
+            
+const show_option = async (conversation_id) => {
+    const conv = document.getElementById(`conv`);
+    const yes = document.getElementById(`yes`);
+    const not = document.getElementById(`not`);
+
+    conv.style.display = "none";
+    yes.style.display = "block";
+    not.style.display = "block";
+
+    
+}
+
+const hide_option = async (conversation_id) => {
+    const conv = document.getElementById(`conv`);
+    const yes = document.getElementById(`yes`);
+    const not = document.getElementById(`not`);
+
+    conv.style.display = "block";
+    yes.style.display = "none";
+    not.style.display = "none"; 
+}
 const delete_conversation = async (conversation_id) => {
     localStorage.removeItem(`conversation:${conversation_id}`)
     
     if (window.conversation_id == conversation_id) {
         await new_conversation()
     }
-
+    
     await load_conversations(20, 0, true)
 }
+
+
 
 const set_conversation = async (conversation_id) => {
     history.pushState({}, null, `/chat/${conversation_id}`);
@@ -310,6 +335,7 @@ const add_message = async (conversation_id, role, content) => {
     localStorage.setItem(`conversation:${conversation_id}`, JSON.stringify(before_adding)) // update conversation
 }
 
+
 const load_conversations = async (limit, offset, loader) => {
     //console.log(loader);
     //if (loader === undefined) box_conversations.appendChild(spinner);
@@ -324,7 +350,7 @@ const load_conversations = async (limit, offset, loader) => {
     
     //if (loader === undefined) spinner.parentNode.removeChild(spinner)
     await clear_conversations()
-
+    
     for (conversation of conversations) {
         box_conversations.innerHTML += `
             <div class="convo">
@@ -332,9 +358,10 @@ const load_conversations = async (limit, offset, loader) => {
                     <i class="fa-regular fa-comments"></i>
                     <span class="convo-title">${conversation.title}</span>
                 </div>
-                <i onclick="delete_conversation('${conversation.id}')" class="fa-regular fa-trash"></i>
+                <i onclick="show_option('${conversation.id}')" class="fa-regular fa-trash" id="conv"></i><i onclick="delete_conversation('${conversation.id}')" class="fa-regular fa-check" id="yes" style="display:none;"></i><i onclick="hide_option('${conversation.id}')" class="fa-regular fa-x" id="not" style="display:none;"></i>
             </div>
         `;
+        
     }
 
     document.querySelectorAll(`code`).forEach((el) => {
