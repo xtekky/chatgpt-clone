@@ -6,6 +6,7 @@ from datetime import datetime
 from requests import get
 from requests import post 
 from json     import loads
+import os
 
 from server.config import special_instructions
 
@@ -13,7 +14,8 @@ from server.config import special_instructions
 class Backend_Api:
     def __init__(self, app, config: dict) -> None:
         self.app = app
-        self.openai_key = config['openai_key']
+        self.openai_key = os.environ["OPENAI_API_KEY"] or config['openai_key']
+        self.openai_api_base = os.environ["OPENAI_API_BASE"] or config['openai_api_base']
         self.routes = {
             '/backend-api/v2/conversation': {
                 'function': self._conversation,
@@ -52,7 +54,8 @@ class Backend_Api:
                 extra + special_instructions[jailbreak] + \
                 _conversation + [prompt]
 
-            gpt_resp = post('https://api.openai.com/v1/chat/completions',
+            url = f"{self.openai_api_base}/v1/chat/completions"
+            gpt_resp = post(url,
                 headers = {'Authorization': 'Bearer %s' % self.openai_key}, 
                 json    = {
                     'model'             : request.json['model'], 
