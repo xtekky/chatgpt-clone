@@ -244,8 +244,31 @@ const clear_conversation = async () => {
   }
 };
 
+const show_option = async (conversation_id) => {
+  const conv = document.getElementById(`conv-${conversation_id}`);
+  const yes = document.getElementById(`yes-${conversation_id}`);
+  const not = document.getElementById(`not-${conversation_id}`);
+
+  conv.style.display = "none";
+  yes.style.display = "block";
+  not.style.display = "block"; 
+}
+
+const hide_option = async (conversation_id) => {
+  const conv = document.getElementById(`conv-${conversation_id}`);
+  const yes = document.getElementById(`yes-${conversation_id}`);
+  const not = document.getElementById(`not-${conversation_id}`);
+
+  conv.style.display = "block";
+  yes.style.display = "none";
+  not.style.display = "none"; 
+}
+
 const delete_conversation = async (conversation_id) => {
   localStorage.removeItem(`conversation:${conversation_id}`);
+
+  const conversation = document.getElementById(`convo-${conversation_id}`);
+    conversation.remove();
 
   if (window.conversation_id == conversation_id) {
     await new_conversation();
@@ -363,14 +386,16 @@ const load_conversations = async (limit, offset, loader) => {
 
   for (conversation of conversations) {
     box_conversations.innerHTML += `
-            <div class="convo">
-                <div class="left" onclick="set_conversation('${conversation.id}')">
-                    <i class="fa-regular fa-comments"></i>
-                    <span class="convo-title">${conversation.title}</span>
-                </div>
-                <i onclick="delete_conversation('${conversation.id}')" class="fa-regular fa-trash"></i>
-            </div>
-        `;
+    <div class="convo" id="convo-${conversation.id}">
+      <div class="left" onclick="set_conversation('${conversation.id}')">
+          <i class="fa-regular fa-comments"></i>
+          <span class="convo-title">${conversation.title}</span>
+      </div>
+      <i onclick="show_option('${conversation.id}')" class="fa-regular fa-trash" id="conv-${conversation.id}"></i>
+      <i onclick="delete_conversation('${conversation.id}')" class="fa-regular fa-check" id="yes-${conversation.id}" style="display:none;"></i>
+      <i onclick="hide_option('${conversation.id}')" class="fa-regular fa-x" id="not-${conversation.id}" style="display:none;"></i>
+    </div>
+    `;
   }
 
   document.querySelectorAll(`code`).forEach((el) => {
