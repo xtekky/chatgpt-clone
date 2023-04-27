@@ -14,8 +14,8 @@ from server.config import special_instructions
 class Backend_Api:
     def __init__(self, app, config: dict) -> None:
         self.app = app
-        self.openai_key = os.environ["OPENAI_API_KEY"] or config['openai_key']
-        self.openai_api_base = os.environ["OPENAI_API_BASE"] or config['openai_api_base']
+        self.openai_key = os.getenv("OPENAI_API_KEY") or config['openai_key']
+        self.openai_api_base = os.getenv("OPENAI_API_BASE") or config['openai_api_base']
         self.routes = {
             '/backend-api/v2/conversation': {
                 'function': self._conversation,
