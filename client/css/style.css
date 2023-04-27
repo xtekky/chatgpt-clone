@@ -9,25 +9,25 @@
     --colour-6: #000000;
 
     --accent: #ffffff;
-    --blur-bg: #98989866;
+    --colour-1: #98989866;
     --blur-border: #00000040;
     --user-input: #000000;
     --conversations: #000000;
 } */
 
 :root {
-    --colour-1: #000000;
-    --colour-2: #ccc;
-    --colour-3: #e4d4ff;
-    --colour-4: #f0f0f0;
-    --colour-5: #181818;
-    --colour-6: #242424;
+    --colour-1: #000000;  /* Background colour behind the chat box area*/
+    --colour-2: #c8b4b4;
+    --colour-3: #000000;   /* Font colour */
+    --colour-4: #371595;
+    --colour-5: #34bd8f;
+    --colour-6: #d04545;
 
-    --accent: #8b3dff;
-    --blur-bg: #16101b66;
-    --blur-border: #84719040;
-    --user-input: #ac87bb;
-    --conversations: #c7a2ff;
+    --accent: hsl(0, 80%, 49%);
+    --colour-1: hsl(210, 21%, 85%);
+    --blur-border: hsl(0, 7%, 86%);
+    --user-input: hsl(18, 29%, 27%);
+    --conversations: hsl(207, 93%, 48%); /*Dashed line boxes and icons colour*/
 }
 
 :root {
@@ -66,7 +66,7 @@ body {
 .box {
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    background-color: var(--blur-bg);
+    background-color: var(--colour-1);
     height: 100%;
     width: 100%;
     border-radius: var(--border-radius-1);
@@ -281,7 +281,7 @@ body {
 .stop_generating button {
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    background-color: var(--blur-bg);
+    background-color: var(--colour-1);
     border-radius: var(--border-radius-1);
     border: 1px solid var(--blur-border);
     padding: 10px 15px;
@@ -345,7 +345,7 @@ label {
     height: 30px;
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    background-color: var(--blur-bg);
+    background-color: var(--colour-1);
     border-radius: var(--border-radius-1);
     border: 1px solid var(--blur-border);
     display: block;
@@ -406,7 +406,7 @@ select {
     backdrop-filter: blur(20px);
 
     cursor: pointer;
-    background-color: var(--blur-bg);
+    background-color: var(--colour-1);
     border: 1px solid var(--blur-border);
     color: var(--colour-3);
     display: block;
@@ -453,7 +453,7 @@ select {
     cursor: pointer;
     user-select: none;
     background: transparent;
-    border: 1px solid #c7a2ff;
+    border: 1px dashed var(--conversations);
     border-radius: var(--border-radius-1);
     width: 100%;
 }
@@ -550,7 +550,7 @@ ul {
     cursor: pointer;
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    background-color: var(--blur-bg);
+    background-color: var(--colour-1);
     border-radius: 10px;
     border: 1px solid var(--blur-border);
     width: 40px;
@@ -679,3 +679,101 @@ a:-webkit-any-link {
     white-space: nowrap;
     width: 1px
 }
+
+.visually-hidden {
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+
+.color-picker > fieldset {
+border: 0;
+display: flex;
+gap: 2rem;
+width: fit-content;
+background: var(--colour-1);
+padding: 1rem 3rem;
+margin-inline: auto;
+border-radius: var(--border-radius-1);
+
+}
+
+.color-picker input[type="radio"]:checked {
+  background-color: var(--radio-color);
+}
+
+.color-picker input[type="radio"]#light {
+  --radio-color: gray;
+}
+.color-picker input[type="radio"]#pink {
+  --radio-color: pink;
+}
+.color-picker input[type="radio"]#blue {
+  --radio-color: blue;
+}
+.color-picker input[type="radio"]#green {
+  --radio-color: green;
+}
+.color-picker input[type="radio"]#dark {
+  --radio-color: #232323;
+}
+
+.pink {
+    --colour-1: hsl(310 50% 90%);
+    --clr-card-bg: hsl(310 50% 100%);
+    --colour-3: hsl(310 50% 15%);
+    --conversations: hsl(310 50% 25%);
+  }
+  
+  .blue {
+    --colour-1: hsl(209 50% 90%);
+    --clr-card-bg: hsl(209 50% 100%);
+    --colour-3: hsl(209 50% 15%);
+    --conversations: hsl(209 50% 25%);
+  }
+  
+  .green {
+    --colour-1: hsl(109 50% 90%);
+    --clr-card-bg: hsl(109 50% 100%);
+    --colour-3: hsl(109 50% 15%);
+    --conversations: hsl(109 50% 25%);
+  }
+  
+  .dark {
+    --colour-1: hsl(209 50% 10%);
+    --clr-card-bg: hsl(209 50% 5%);
+    --colour-3: hsl(209 50% 90%);
+    --conversations: hsl(209 50% 80%);
+  }
+  
+  :root:has(#pink:checked) {
+    --colour-1: hsl(310 50% 90%);
+    --clr-card-bg: hsl(310 50% 100%);
+    --colour-3: hsl(310 50% 15%);
+    --conversations: hsl(310 50% 25%);
+  }
+  
+  :root:has(#blue:checked) {
+    --colour-1: hsl(209 50% 90%);
+    --clr-card-bg: hsl(209 50% 100%);
+    --colour-3: hsl(209 50% 15%);
+    --conversations: hsl(209 50% 25%);
+  }
+  
+  :root:has(#green:checked) {
+    --colour-1: hsl(109 50% 90%);
+    --clr-card-bg: hsl(109 50% 100%);
+    --colour-3: hsl(109 50% 15%);
+    --conversations: hsl(109 50% 25%);
+  }
+  
+  :root:has(#dark:checked) {
+    --colour-1: hsl(209 50% 10%);
+    --clr-card-bg: hsl(209 50% 5%);
+    --colour-3: hsl(209 50% 90%);
+    --conversations: hsl(209 50% 80%);
+  }
