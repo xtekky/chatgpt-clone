@@ -2,7 +2,7 @@ working again ; )
 I am very busy at the moment so I would be very thankful for contributions and PR's
 
 ## To do
-- [ ] Double confirm when deleting conversation
+- [x] Double confirm when deleting conversation
 - [ ] loading / exporting a conversation
 - [x] remember user preferences
 - [ ] theme changer
