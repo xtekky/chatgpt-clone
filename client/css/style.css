@@ -146,6 +146,8 @@ body {
     display: flex;
     flex-direction: column;
     gap: 16px;
+    flex: auto;
+    min-width: 0;
 }
 
 .conversations .title {
@@ -167,6 +169,8 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
+    flex: auto;
+    min-width: 0;
 }
 
 .conversations i {
@@ -177,6 +181,8 @@ body {
 .convo-title {
     color: var(--colour-3);
     font-size: 14px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .message {
@@ -230,6 +236,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 18px;
+    min-width: 0;
 }
 
 .message .content p,
