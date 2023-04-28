@@ -44,6 +44,10 @@ python -m venv venv
 ```
 source venv/bin/activate
 ```
+If you are using fish shell, the command will be slightly different:
+```
+source venv/bin/activate.fish
+```
 If you're on Windows, the command will be slightly different:
 ```
 venv\Scripts\activate
