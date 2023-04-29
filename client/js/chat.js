@@ -83,8 +83,6 @@ const ask_gpt = async (message) => {
             </div>
         `;
 
-    /* .replace(/(?:\r\n|\r|\n)/g, '<br>') */
-
     message_box.scrollTop = message_box.scrollHeight;
     window.scrollTo(0, 0);
     await new Promise((r) => setTimeout(r, 500));
@@ -137,49 +135,26 @@ const ask_gpt = async (message) => {
 
     const reader = response.body.getReader();
 
-    while (true) {
-      const { value, done } = await reader.read();
-      if (done) break;
+    try {
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
 
-      chunk = new TextDecoder().decode(value);
+        chunk = new TextDecoder().decode(value);
+        text += chunk;
+        document.getElementById(`gpt_${window.token}`).innerHTML = markdown.render(text);
+        document.querySelectorAll(`code`).forEach((el) => {
+          hljs.highlightElement(el);
+        });
 
-      if (
-        chunk.includes(
-          `<form id="challenge-form" action="/backend-api/v2/conversation?`
-        )
-      ) {
-        chunk = `cloudflare token expired, please refresh the page.`;
+        window.scrollTo(0, 0);
+        message_box.scrollTo({ top: message_box.scrollHeight, behavior: "auto" });
       }
-
-      text += chunk;
-
-      // const objects         = chunk.match(/({.+?})/g);
-
-      // try { if (JSON.parse(objects[0]).success === false) throw new Error(JSON.parse(objects[0]).error) } catch (e) {}
-
-      // objects.forEach((object) => {
-      //     console.log(object)
-      //     try { text += h2a(JSON.parse(object).content) } catch(t) { console.log(t); throw new Error(t)}
-      // });
-
-      document.getElementById(`gpt_${window.token}`).innerHTML =
-        markdown.render(text);
-      document.querySelectorAll(`code`).forEach((el) => {
-        hljs.highlightElement(el);
-      });
-
-      window.scrollTo(0, 0);
-      message_box.scrollTo({ top: message_box.scrollHeight, behavior: "auto" });
-    }
-
-    // if text contains :
-    if (
-      text.includes(
-        `instead. Maintaining this website and API costs a lot of money`
-      )
-    ) {
-      document.getElementById(`gpt_${window.token}`).innerHTML =
-        "An error occured, please reload / refresh cache and try again.";
+    } catch (error) {
+      console.error("Error while processing response:", error);
+      let error_message = "An error has occurred. Please try again.";
+      document.getElementById(`gpt_${window.token}`).innerHTML = error_message;
+      add_message(window.conversation_id, "assistant", error_message);
     }
 
     add_message(window.conversation_id, "user", message);
@@ -198,7 +173,7 @@ const ask_gpt = async (message) => {
     await remove_cancel_button();
     prompt_lock = false;
 
-    await load_conversations(20, 0);
+    await load_conversations(20, 0, true);
 
     console.log(e);
 
