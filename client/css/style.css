@@ -54,7 +54,7 @@ body {
     padding: var(--section-gap);
     background: var(--colour-1);
     color: var(--colour-3);
-    height: 100vh;
+    min-height: 100vh;
 }
 
 .row {
