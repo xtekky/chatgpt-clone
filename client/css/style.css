@@ -718,28 +718,40 @@ a:-webkit-any-link {
     padding: 6px 16px;
 }
 
+.color-picker input[type="radio"] {
+    appearance: none;
+    background-color: #fff;
+    margin: 0;
+    font: inherit;
+    width: 19px;
+    height: 19px;
+    border: 2px solid #000;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
 .color-picker input[type="radio"]:checked {
     background-color: var(--radio-color);
 }
 
 .color-picker input[type="radio"]#light {
-    --radio-color: gray;
+    --radio-color: #0F071C;
 }
 
 .color-picker input[type="radio"]#pink {
-    --radio-color: pink;
+    --radio-color: #E6C7F0;
 }
 
 .color-picker input[type="radio"]#blue {
-    --radio-color: blue;
+    --radio-color: #D0D3F3;
 }
 
 .color-picker input[type="radio"]#green {
-    --radio-color: green;
+    --radio-color: #D4DFDD;
 }
 
 .color-picker input[type="radio"]#dark {
-    --radio-color: #232323;
+    --radio-color: #1A1E3D;
 }
 
 .pink {
