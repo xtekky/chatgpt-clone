@@ -85,6 +85,10 @@ body {
 
 .conversation {
     width: 100%;
+    min-height: 50%;
+    height: 100vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -92,16 +96,16 @@ body {
 
 .conversation #messages {
     width: 100%;
-    height: 100%;
     display: flex;
     flex-direction: column;
-    overflow: auto;
     overflow-wrap: break-word;
+    overflow-y: inherit;
+    overflow-x: hidden;
     padding-bottom: 50px;
 }
 
 .conversation .user-input {
-    max-height: 200px;
+    max-height: 10vh;
 }
 
 .conversation .user-input input {
@@ -384,8 +388,9 @@ input:checked+label:after {
 }
 
 .buttons {
+    min-height: 10vh;
     display: flex;
-    align-items: center;
+    align-items: start;
     justify-content: left;
     width: 100%;
 }
@@ -403,6 +408,15 @@ input:checked+label:after {
     color: var(--colour-3);
 }
 
+.disable-scrollbars::-webkit-scrollbar {
+  background: transparent; /* Chrome/Safari/Webkit */
+  width: 0px;
+}
+    
+.disable-scrollbars {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE 10+ */
+}
 
 select {
     -webkit-border-radius: 8px;
@@ -583,14 +597,16 @@ ul {
     }
 
     .buttons {
-        align-items: flex-start;
-        flex-wrap: wrap;
-        gap: 15px;
-    }
+    flex-wrap: wrap;
+    gap: 5px;
+    padding-bottom: 10vh;
+    margin-bottom: 10vh;
+}
 
     .field {
-        width: fit-content;
-    }
+    min-height: 5%;
+    width: fit-content;
+}
 
     .mobile-sidebar {
         display: flex !important;
