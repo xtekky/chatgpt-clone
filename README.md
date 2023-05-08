@@ -80,3 +80,8 @@ The easiest way to run ChatGPT Clone is by using docker
 docker-compose up
 ```
 
+### Kubernetes
+
+1. Run `kubectl apply -f kubernetes/`. It will create a deployment and ClusterIP Ingress in the namespace "chatgpt-clone"
+2. Create a secret containing your OPENAI-API-TOKEN with: `kubectl create secret generic openai-api-key --from-literal=openai-api-key=[YOUR_OPENAI_TOKEN] -n chatgpt-clone`
+3. Either change the service to load balancer or ingress (don't forget to password protect it!!), or port-forward it to your local machine: `kubectl port-forward deployment/chatgpt-clone 1338:1338 -n chatgpt-clone`
