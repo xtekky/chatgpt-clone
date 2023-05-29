@@ -34,7 +34,6 @@ To set up a virtual environment, follow these steps:
 
 1. Navigate to the root directory of your project.
 ```
-cd chatgpt-clone
 ```
 2. Run the following command to create a new virtual environment:
 ```
