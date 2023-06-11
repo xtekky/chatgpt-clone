@@ -60,10 +60,10 @@ pip install -r requirements.txt
 ### Configure the Application
 To configure the application, there are a few properties that can be set either via the environment or via config.json.  The environment variable takes priority.
 
-| Field               | Env Variable    | config.json    | examples                                           |
-|---------------------|-----------------|----------------|----------------------------------------------------|
-| The OpenAI Api Key  | OPENAI_API_KEY  | openai_key     | sk-...                                             
-| The OpenAI Base URL | OPENAI_API_BASE | openai_api_key | https://api.openai.com <br> http://my-reverse-proxy/ 
+| Field               | Env Variable    | config.json     | examples                                           |
+|---------------------|-----------------|-----------------|----------------------------------------------------|
+| The OpenAI Api Key  | OPENAI_API_KEY  | openai_key      | sk-...                                             
+| The OpenAI Base URL | OPENAI_API_BASE | openai_api_base | https://api.openai.com <br> http://my-reverse-proxy/ 
 
 Use the Base URL if you need to run your queries through a reverse proxy (like [this one](https://github.com/stulzq/azure-openai-proxy) which will run your queries through Azure's OpenAI endpoints )
 
