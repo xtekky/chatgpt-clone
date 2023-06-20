@@ -85,6 +85,7 @@ const ask_gpt = async (message) => {
                 <div class="content" id="user_${token}"> 
                     ${format(message)}
                 </div>
+                <i class="fa fa-trash trash-icon" onclick="deleteMessage('${token}')"></i>
             </div>
         `;
 
@@ -187,8 +188,8 @@ const ask_gpt = async (message) => {
         "An error occured, please reload / refresh cache and try again.";
     }
 
-    add_message(window.conversation_id, "user", message);
-    add_message(window.conversation_id, "assistant", text);
+    add_message(window.conversation_id, "user", message, token);
+    add_message(window.conversation_id, "assistant", text, token);
 
     message_box.scrollTop = message_box.scrollHeight;
     await remove_cancel_button();
@@ -197,7 +198,7 @@ const ask_gpt = async (message) => {
     await load_conversations(20, 0);
     window.scrollTo(0, 0);
   } catch (e) {
-    add_message(window.conversation_id, "user", message);
+    add_message(window.conversation_id, "user", message, token);
 
     message_box.scrollTop = message_box.scrollHeight;
     await remove_cancel_button();
@@ -214,10 +215,10 @@ const ask_gpt = async (message) => {
       let error_message = `oops ! something went wrong, please try again / reload. [stacktrace in console]`;
 
       document.getElementById(`gpt_${window.token}`).innerHTML = error_message;
-      add_message(window.conversation_id, "assistant", error_message);
+      add_message(window.conversation_id, "assistant", error_message, token);
     } else {
       document.getElementById(`gpt_${window.token}`).innerHTML += ` [aborted]`;
-      add_message(window.conversation_id, "assistant", text + ` [aborted]`);
+      add_message(window.conversation_id, "assistant", text + ` [aborted]`, token);
     }
 
     window.scrollTo(0, 0);
@@ -316,13 +317,22 @@ const load_conversation = async (conversation_id) => {
                         : `<i class="fa-regular fa-phone-arrow-up-right"></i>`
                     }
                 </div>
-                <div class="content">
+               ${
+                  item.role == "user"
+                    ? `<div class="content" id="user_${item.token}">`
+                    : `<div class="content" id="gpt_${item.token}">`
+                }
                     ${
                       item.role == "assistant"
                         ? markdown.render(item.content)
                         : item.content
                     }
                 </div>
+                  ${
+                    item.role == "user"
+                    ? `<i class="fa fa-trash trash-icon" onclick="deleteMessage('${item.token}')"></i>`
+                    : ''
+                   }                
             </div>
         `;
   }
@@ -358,7 +368,7 @@ const add_conversation = async (conversation_id, title) => {
   }
 };
 
-const add_message = async (conversation_id, role, content) => {
+const add_message = async (conversation_id, role, content, token) => {
   before_adding = JSON.parse(
     localStorage.getItem(`conversation:${conversation_id}`)
   );
@@ -366,6 +376,7 @@ const add_message = async (conversation_id, role, content) => {
   before_adding.items.push({
     role: role,
     content: content,
+    token: token,
   });
 
   localStorage.setItem(
@@ -563,5 +574,20 @@ colorThemes.forEach((themeOption) => {
     document.documentElement.className = themeOption.id;
   });
 });
+
+function deleteMessage(token) {
+  const messageDivUser = document.getElementById(`user_${token}`)
+  const messageDivGpt = document.getElementById(`gpt_${token}`)
+  if (messageDivUser) messageDivUser.parentNode.remove();
+  if (messageDivGpt) messageDivGpt.parentNode.remove();
+  const conversation = JSON.parse(localStorage.getItem(`conversation:${window.conversation_id}`));
+  conversation.items = conversation.items.filter(item => item.token !== token);
+  localStorage.setItem(`conversation:${window.conversation_id}`, JSON.stringify(conversation));
+
+  const messages = document.getElementsByClassName("message");
+  if (messages.length === 0) {
+    delete_conversation(window.conversation_id);
+  };
+}
 
 document.onload = setTheme();

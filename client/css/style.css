@@ -813,3 +813,9 @@ a:-webkit-any-link {
     --colour-3: hsl(209 50% 90%);
     --conversations: hsl(209 50% 80%);
 }
+
+.trash-icon {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
