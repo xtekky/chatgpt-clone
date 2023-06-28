@@ -1,0 +1,95 @@
+{% load static i18n %}<!DOCTYPE html>
+{% get_current_language as LANGUAGE_CODE %}
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>{% block title %}ChatGPT Clone{% endblock title %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Django ChatGPT Clone">
+  <meta name="darkreader-lock">
+
+  <link rel="icon" href="{% static 'images/favicons/favicon.ico' %}">
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/favicons/apple-touch-icon.png' %}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicons/favicon-32x32.png' %}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicons/favicon-16x16.png' %}">
+  <link rel="manifest" href="{% static 'images/site.webmanifest' %}">
+
+  <link rel="stylesheet" href="{% static 'css/chat.css' %}?id={{ csrf_token }}">
+  <link rel="preload" as="style" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@latest/build/styles/base16/dracula.min.css" onload="this.onload=null;this.rel='stylesheet'">
+
+  <script>window.STATIC_BASE_URL = '{% static '' %}';</script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/highlightjs-copy@1.0.3/dist/highlightjs-copy.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/markdown-it@latest/dist/markdown-it.min.js"></script>
+  <script src="https://unpkg.com/typeit@8.7.1/dist/index.umd.js"></script>
+
+  <script src="{% static 'js/icons.js' %}"></script>
+  <script src="{% static 'js/chat.js' %}?id={{ csrf_token }}"></script>
+  <script>window.chatGPTClone = new ChatGPTClone('{{ conversation_id }}');</script>
+</head>
+
+<body>
+<div class="gradient"></div>
+<div class="row">
+  <div class="box conversations">
+    <div class="top">
+      <button id="new-conversation-button" class="new-conversation">
+        <i class="fa-regular fa-plus"></i>
+        <span>New Conversation</span>
+      </button>
+      <div class="spinner"></div>
+    </div>
+    <div class="bottom_buttons">
+      <button id="delete-conversations-button">
+        <i class="fa-regular fa-trash"></i>
+        <span>Clear Conversations</span>
+      </button>
+      <div class="info">
+        <i class="fa-regular fa-circle-info"></i>
+        <span class="convo-title">
+          By: @xtekky and @ryan-blunden<br>          
+        </span>
+      </div>
+      <div class="info">
+        <i class="fa-regular fa-gear"></i>
+        <span class="convo-title">
+          Model: {{ model }}
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="conversation disable-scrollbars">
+    <div class="stop_generating stop_generating-hidden">
+      <button id="cancel-button">
+        <span>Stop Generating</span>
+        <i class="fa-regular fa-stop"></i>
+      </button>
+    </div>
+    <div class="box" id="messages">
+    </div>
+    <div class="user-input">
+      <div class="box input-box">
+        <textarea id="message-input" placeholder="Ask a question" data-gramm="false"></textarea>
+        <div id="send-button">
+          <i class="fa-regular fa-paper-plane-top"></i>
+        </div>
+      </div>
+    </div>
+    <div class="buttons">
+      <div class="field">
+        <input type="checkbox" id="web-access"/>
+        <label for="web-access"></label>
+        <span class="about">Web Access</span>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="mobile-sidebar">
+  <i class="fa-solid fa-bars"></i>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@latest/dist/js.cookie.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+python-slugify==8.0.1  # https://github.com/un33k/python-slugify
+Pillow==9.5.0  # https://github.com/python-pillow/Pillow
+argon2-cffi==21.3.0  # https://github.com/hynek/argon2_cffi
+whitenoise==6.5.0  # https://github.com/evansd/whitenoise
+redis==4.5.5  # https://github.com/redis/redis-py
+hiredis==2.2.3  # https://github.com/redis/hiredis-py
+requests==2.31.0  # https://github.com/psf/requests
+openai==0.27.8  # https://github.com/openai/openai-python
+duckduckgo_search==3.8.3  # https://github.com/deedy5/duckduckgo_search
+gunicorn==20.1.0  # https://github.com/benoitc/gunicorn
+
+# Django
+# ------------------------------------------------------------------------------
+django==4.1.9  # pyup: < 4.2  # https://www.djangoproject.com/
+django-model-utils==4.3.1  # https://github.com/jazzband/django-model-utils
+django-allauth==0.54.0  # https://github.com/pennersr/django-allauth
+django-redis==5.3.0  # https://github.com/jazzband/django-redis

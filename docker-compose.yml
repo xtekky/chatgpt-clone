@@ -1,11 +1,20 @@
-version: '3.5'
+version: '3'
 
 services:
-  chatgpt-clone:
-    image: chatgpt-clone
-    container_name: chatgpt-clone
-    build:
-      context: .
-      dockerfile: Dockerfile
+  postgres:
+    image: postgres:14
+    container_name: postgres
     ports:
-      - "1338:1338"
+      - 5432:5432
+    volumes:
+      - ./volumes/postgres:/var/lib/postgresql/data:delegated
+    environment:    
+      - POSTGRES_USER 
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+
+  redis:
+    image: redis:6
+    container_name: redis
+    ports:
+      - 6379:6379

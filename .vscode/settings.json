@@ -1,0 +1,6 @@
+{
+    
+    "python.defaultInterpreterPath": "${env:HOME}/.virtualenvs/django-chatgpt-clone/bin/python",
+    "doppler.autocomplete.enable": true,
+    "doppler.hover.enable": true,
+}

@@ -1,0 +1,12 @@
+# Translations for the ChatGPT Clone project
+# Copyright (C) 2023 Ryan Blunden
+# Ryan Blunden <admin@aussiedevrel.com>, 2023.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: 0.1.0\n"
+"Language: en-US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"

@@ -1,0 +1,35 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "django:server",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/manage.py",
+            "args": [
+                "runserver",
+            ],
+            "justMyCode": true,
+            "env": {
+                "DOPPLER_ENV": "1"
+            }
+        },
+        {
+            "name": "django:server-https",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/manage.py",
+            "args": [
+                "runserver_plus",
+                "--cert-file",
+                "chatgptclone.local.pem",
+                "--key-file",
+                "chatgptclone.local-key.pem"
+            ],
+            "justMyCode": true,
+            "env": {
+                "DOPPLER_ENV": "1"
+            }
+        }
+    ]
+}

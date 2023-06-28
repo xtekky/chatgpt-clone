@@ -1,0 +1,67 @@
+version: '3'
+
+vars:
+  GREETING: Hello from Taskfile!
+  VENV: $HOME/.virtualenvs/django-chatgpt-clone
+
+
+tasks:
+  dev:venv:
+    cmds:
+      - mkdir -p {{.VENV}}
+      - python3 -m venv {{.VENV}}
+      - . {{.VENV}}/bin/activate && 
+        pip install --upgrade pip setuptools &&
+        pip install -r requirements/local.txt
+
+  dev:init-local-db:
+    cmds:
+      - psql postgres --file <(doppler secrets substitute utility/init-db.sql)
+
+  dev:cleanup-local-db:
+    cmds:
+      - psql postgres --file utility/cleanup-db.sql
+
+  dev:tls-certs:
+    cmds:
+      - mkcert chatgptclone.local
+
+  django:super-user:
+    cmds:
+      - doppler run -- ./manage.py createsuperuser
+
+  django:make-migrations:
+    doppler run -- ./manage.py makemigrations
+
+  django:migrate:
+    cmds:
+      - doppler run -- ./manage.py migrate
+
+  django:shell:
+    cmds:
+      - doppler run -- ./manage.py shell_plus
+
+  django:server:
+    cmds:
+      - doppler run -- ./manage.py runserver_plus
+
+  server:
+    cmds:
+      - doppler run --command='gunicorn config.wsgi:application --bind $HOST:$PORT --certfile chatgptclone.local.pem --keyfile chatgptclone.local-key.pem'
+
+  checks:pylint:
+    cmds:
+      - 
+  checks:flake8:
+    cmds:
+      - flake8
+
+  checks:black:
+    cmds:
+      - black ./
+
+  checks:lint-js:
+    npm run lint
+
+  checks:prettier:
+    npm run prettier

@@ -1,0 +1,58 @@
+{
+    "root": true,
+    "env": {
+      "browser": true
+    },
+    "globals": {
+      "hljs": "readonly",
+      "CopyButtonPlugin": "readonly",
+      "markdownit": "readonly",
+      "Cookies": "readonly"
+    },
+    "extends": [
+      "airbnb-base"
+    ],
+    "parserOptions": {
+      "ecmaVersion": 11,
+      "sourceType": "module"
+    },
+    "rules": {
+      "import/extensions": [
+        "error",
+        "ignorePackages",
+        {
+          "js": "always"
+        }
+      ],
+      "max-classes-per-file": [
+        "error",
+        2
+      ],
+      "semi": [
+        "error",
+        "never"
+      ],
+      "object-curly-newline": [
+        "error",
+        {
+          "consistent": true
+        }
+      ],
+      "comma-dangle": [
+        "error",
+        {
+          "arrays": "ignore",
+          "objects": "ignore",
+          "functions": "never"
+        }
+      ],
+      "arrow-parens": [
+        "error",
+        "as-needed"
+      ],
+      "no-console": "off"
+    },
+    "ignorePatterns":[
+      "icons.js"
+    ]
+  }
