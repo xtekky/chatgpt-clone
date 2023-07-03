@@ -20,7 +20,7 @@ tasks:
 
   dev:cleanup-local-db:
     cmds:
-      - psql postgres --file utility/cleanup-db.sql
+      - psql postgres --file <(doppler secrets substitute utility/cleanup-db.sql)
 
   dev:tls-certs:
     cmds:
@@ -47,8 +47,15 @@ tasks:
 
   server:
     cmds:
+      - doppler run --command='gunicorn config.wsgi:application --bind $HOST:$PORT'
+
+  server-tls:
+    cmds:
       - doppler run --command='gunicorn config.wsgi:application --bind $HOST:$PORT --certfile chatgptclone.local.pem --keyfile chatgptclone.local-key.pem'
 
+  test:
+    cmds:
+      - doppler run --config test -- pytest
   checks:pylint:
     cmds:
       - 

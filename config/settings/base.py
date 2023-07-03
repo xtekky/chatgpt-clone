@@ -44,12 +44,12 @@ LOCALE_PATHS = [str(BASE_DIR / "locale")]
 
 DATABASES = {
     "default": {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ['POSTGRES_DB'],
-        'USER': os.environ['POSTGRES_USER'],
-        'PASSWORD': os.environ['POSTGRES_PASSWORD'],
-        'HOST': os.environ['POSTGRES_HOST'],
-        'PORT': os.environ['POSTGRES_PORT'],
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.environ["POSTGRES_DB"],
+        "USER": os.environ["POSTGRES_USER"],
+        "PASSWORD": os.environ["POSTGRES_PASSWORD"],
+        "HOST": os.environ["POSTGRES_HOST"],
+        "PORT": os.environ["POSTGRES_PORT"],
     },
 }
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
@@ -214,7 +214,7 @@ EMAIL_TIMEOUT = 5
 # ADMIN
 # ------------------------------------------------------------------------------
 # Django Admin URL.
-ADMIN_URL = "admin/"
+ADMIN_URL = os.environ["DJANGO_ADMIN_URL"]
 # https://docs.djangoproject.com/en/dev/ref/settings/#admins
 ADMINS = [("""Ryan Blunden""", "admin@aussiedevrel.com")]
 # https://docs.djangoproject.com/en/dev/ref/settings/#managers

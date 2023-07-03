@@ -39,15 +39,18 @@ jobs:
 
     services:
       postgres:
-        image: postgres:12
+        image: postgres:14
         ports:
           - 5432:5432
         env:
           POSTGRES_PASSWORD: postgres
 
     env:
-      # postgres://user:password@host:port/database
-      DATABASE_URL: 'postgres://postgres:postgres@localhost:5432/postgres'
+      POSTGRES_DB: 'chatgpt_clone_test'
+      POSTGRES_HOST: 'postgres'
+      POSTGRES_PASSWORD: 'chatgpt_clone_test'
+      POSTGRES_PORT: '5432'
+      POSTGRES_USER: 'chatgpt_clone_test'
 
     steps:
       - name: Checkout Code Repository

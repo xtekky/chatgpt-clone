@@ -1,8 +1,6 @@
 import os
-import json
 
 from .base import *  # noqa
-from .base import DEBUG
 
 # CACHES
 # ------------------------------------------------------------------------------
@@ -28,7 +26,7 @@ INSTALLED_APPS = ["whitenoise.runserver_nostatic"] + INSTALLED_APPS  # noqa: F40
 # django-debug-toolbar
 # ------------------------------------------------------------------------------
 
-if DEBUG:
+if os.environ.get("DJANGO_TOOLBAR_ENABLED", None) == "True":
     # https://django-debug-toolbar.readthedocs.io/en/latest/installation.html#prerequisites
     INSTALLED_APPS += ["debug_toolbar"]  # noqa: F405
     # https://django-debug-toolbar.readthedocs.io/en/latest/installation.html#middleware

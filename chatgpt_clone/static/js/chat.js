@@ -8,6 +8,7 @@ class ChatGPTClone {
   }
 
   onDOMReady() {
+    this.abortController = new AbortController()
     this.markdown = window.markdownit()
     this.messageBox = document.querySelector('#messages')
     this.messageInput = document.querySelector('#message-input')
@@ -115,10 +116,14 @@ class ChatGPTClone {
       this.requestCompleted()
     }
 
+    const conversation = this.getConversation(this.conversationId)
+    let responseText = ''
+
     try {
-      const conversation = this.getConversation(this.conversationId)
+      this.abortController = new AbortController()
       const response = await fetch('/chat/', {
         method: 'POST',
+        signal: this.abortController.signal,
         headers: {
           'Content-Type': 'application/json',
           'X-CSRFToken': Cookies.get('csrftoken'),
@@ -141,33 +146,44 @@ class ChatGPTClone {
         }),
       })
 
-      const text = await response.text()
-
       if (response.ok) {
         if (!conversation) {
-          this.addConversation(message, text)
+          this.addConversation(message)
         }
         this.addMessageToConversation('user', message)
-        this.addMessageToConversation('assistant', text)
-        this.loadConversations(20, 0)
+        const reader = response.body.getReader()
 
-        await this.typeText(text, gptContent)
-        this.messageBox.scrollTo({
-          top: this.messageBox.scrollHeight,
-          behavior: 'auto',
-        })
-
-        this.requestCompleted()
+        while (reader) {
+          // eslint-disable-next-line no-await-in-loop
+          const { done, value } = await reader.read()
+          responseText += new TextDecoder('utf-8').decode(value)
+          gptContent.innerHTML = this.markdown.render(responseText)
+          gptContent.querySelectorAll('code').forEach(el => hljs.highlightElement(el))
+          this.messageBox.scrollTo({ top: this.messageBox.scrollHeight, behavior: 'auto' })
+          if (done) {
+            this.addMessageToConversation('assistant', responseText)
+            break
+          }
+        }
       } else {
-        errorHandler(text)
+        const errorResponse = await response.text()
+        errorHandler(errorResponse)
       }
     } catch (error) {
-      errorHandler('Sorry, but the server is not responding. Please try again later.')
+      if (error.name !== 'AbortError') {
+        this.addMessageToConversation('assistant', responseText)
+        return
+      }
+
+      this.deleteConversation(this.conversationId)
+      errorHandler('Sorry, something went wrong. Please try again later.')
       console.log('fetch error: ', error)
     }
+    this.requestCompleted()
   }
 
   requestCompleted() {
+    this.loadConversations(20, 0)
     this.removeCancelButton()
     this.messageInputLocked = false
   }
@@ -366,6 +382,7 @@ class ChatGPTClone {
   }
 
   removeCancelButton() {
+    this.abortController.abort()
     this.stopGenerating.classList.add('stop_generating-hiding')
 
     setTimeout(() => {
@@ -404,6 +421,8 @@ class ChatGPTClone {
   // eslint-disable-next-line class-methods-use-this
   uuidv4() {
     // eslint-disable-next-line space-infix-ops, no-bitwise, implicit-arrow-linebreak
-    return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c => (c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))).toString(16))
+    return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+      (c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))).toString(16)
+    )
   }
 }

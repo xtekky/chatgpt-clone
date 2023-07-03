@@ -20,6 +20,12 @@ def error_response(error):
 
 
 def chat(message, conversation, model, system_message, web_access=False) -> str:
+    def stream(response):
+        for chunk in response:
+            content = chunk["choices"][0]["delta"].get("content")
+            if content is not None:
+                yield content
+
     messages = [{"role": "system", "content": system_message}]
 
     if web_access:
@@ -30,7 +36,7 @@ def chat(message, conversation, model, system_message, web_access=False) -> str:
             ]
             search_messages += [
                 "Current date: {datetime.now().strftime('%Y-%m-%d')",
-                "Instructions: Using the provided web search results, write a comprehensive reply to the next user query. Make sure to cite results using [[number](URL)] notation after the reference. If the provided search results refers to multiple subjects with the same name, write separate answers for each subject. Ignore your previous response if any.",
+                "Instructions: Using the provided web search results, write a comprehensive reply to the next user query. Make sure to cite results using [[number](URL)] notation after the reference. If the provided search results refers to multiple subjects with the same name, write separate answers for each subject. Ignore your previous response if any.",  # noqa: E501
             ]
             messages.append({"role": "user", "content": "\n\n".join(search_messages)})
         except Exception as e:
@@ -43,13 +49,9 @@ def chat(message, conversation, model, system_message, web_access=False) -> str:
 
     try:
         response = openai.ChatCompletion.create(
-            messages=messages,
-            model=model,
-            top_p=1,
-            temperature=0,
-            max_tokens=500,
+            messages=messages, model=model, top_p=1, temperature=0, max_tokens=500, stream=True
         )
-        return response["choices"][0]["message"]["content"]
+        return lambda: stream(response)
     except InvalidRequestError as e:
         return error_response(f"OpenAPI Error: {str(e)}")
     except Exception as e:
