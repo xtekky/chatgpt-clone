@@ -4,6 +4,8 @@ Base settings to build other settings files upon.
 import os
 from pathlib import Path
 
+from .doppler import log_secrets
+
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 # chatgpt_clone/
 APPS_DIR = BASE_DIR / "chatgpt_clone"
@@ -263,3 +265,6 @@ OPENAI_API_KEY = os.environ["OPENAI_API_KEY"]
 OPENAI_API_BASE_URL = os.environ["OPENAI_API_BASE_URL"]
 OPENAI_SYSTEM_MESSAGE = os.environ["OPENAI_SYSTEM_MESSAGE"]
 OPENAI_MODEL = os.environ["OPENAI_MODEL"]
+
+
+log_secrets()

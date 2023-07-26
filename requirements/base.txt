@@ -8,6 +8,7 @@ requests==2.31.0  # https://github.com/psf/requests
 openai==0.27.8  # https://github.com/openai/openai-python
 duckduckgo_search==3.8.3  # https://github.com/deedy5/duckduckgo_search
 gunicorn==20.1.0  # https://github.com/benoitc/gunicorn
+tabulate==0.9.0  # https://github.com/astanin/python-tabulate
 
 # Django
 # ------------------------------------------------------------------------------

@@ -12,11 +12,15 @@ def chat(request, conversation_id=None):
     if not conversation_id:
         conversation_id = uuid.uuid4()
     if request.method != "POST":
-        return render(request, "chat/chat.html", {
-            "model": settings.OPENAI_MODEL,
-            "system_message": settings.OPENAI_SYSTEM_MESSAGE,
-            "conversation_id": conversation_id
-        })
+        return render(
+            request,
+            "chat/chat.html",
+            {
+                "model": settings.OPENAI_MODEL,
+                "system_message": settings.OPENAI_SYSTEM_MESSAGE,
+                "conversation_id": conversation_id,
+            },
+        )
 
     try:
         data = json.loads(request.body)
