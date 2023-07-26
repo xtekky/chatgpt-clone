@@ -14,10 +14,6 @@ def web_search(query):
     return results
 
 
-def error_response(error):
-    return f"Sorry, an error occurred and I couldn't complete your ChatGPT request: {error}"
-
-
 def chat(message, conversation, model, system_message, web_access=False) -> str:
     def stream(response):
         for chunk in response:
