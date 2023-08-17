@@ -42,17 +42,17 @@
 
             /* Track */
             #message-input::-webkit-scrollbar-track {
-                background: #f1f1f1; 
+                background: #f1f1f1;
             }
-            
+
             /* Handle */
             #message-input::-webkit-scrollbar-thumb {
-                background: #c7a2ff; 
+                background: #c7a2ff;
             }
 
             /* Handle on hover */
             #message-input::-webkit-scrollbar-thumb:hover {
-                background: #8b3dff; 
+                background: #8b3dff;
             }
         </style>
         <script src="/assets/js/highlight.min.js"></script>
@@ -63,7 +63,7 @@
     <body>
         <div class="gradient"></div>
         <div class="row">
-            <div class="box conversations">
+            <div class="box conversations sidebar">
                 <div class="top">
                     <button class="new_convo" onclick="new_conversation()">
                         <i class="fa-regular fa-plus"></i>
@@ -83,6 +83,22 @@
                             Release: 2023-08-16<br>
                         </span>
                     </div>
+                </div>
+                <div>
+                    <button class="new_convo" style="width: 100%;">
+                        <i class="fa-regular fa-question"></i>
+                        <div data-tf-popover="O2rda4KN" data-tf-opacity="100" data-tf-iframe-props="title=Website Feedback Survey" data-tf-transitive-search-params data-tf-button-color="#0445AF" data-tf-medium="snippet" style="all:unset;">
+                            <a href="https://acy.typeform.com/to/O2rda4KN" data-tf-popup="O2rda4KN" data-tf-medium="snippet" style="display:inline-block;text-decoration:none;">
+                                <span>Feedback</span>
+                            </a>
+                        </div>
+                    </button>
+                </div>
+                <div>
+                    <button class="new_convo" style="width: 100%;">
+                        <i class="fa-regular fa-user"></i>
+                        <span>Username</span>
+                    </button>
                 </div>
             </div>
             <div class="conversation disable-scrollbars">
@@ -127,16 +143,16 @@
                         <legend class="visually-hidden">Pick a color scheme</legend>
                         <label for="light" class="visually-hidden">Light</label>
                         <input type="radio" title="light" name="theme" id="light" checked>
-                    
+
                         <label for="pink" class="visually-hidden">Pink theme</label>
                         <input type="radio" title="pink" id="pink" name="theme">
-                    
+
                         <label for="blue" class="visually-hidden">Blue theme</label>
                         <input type="radio" title="blue" id="blue" name="theme">
-                    
+
                         <label for="green" class="visually-hidden">Green theme</label>
                         <input type="radio" title="green" id="green" name="theme">
-                    
+
                         <label for="dark" class="visually-hidden">Dark theme</label>
                         <input type="radio" title="dark" id="dark" name="theme">
                     </fieldset>
@@ -148,4 +164,5 @@
             <i class="fa-solid fa-bars"></i>
         </div>
     </body>
+    <script src="//embed.typeform.com/next/embed.js"></script>
 </html>
