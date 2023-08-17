@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, Integer, String, Boolean, ForeignKey, DateTime, Binary
+from sqlalchemy import create_engine, Column, Integer, String, Boolean, ForeignKey, DateTime
 from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy.ext.declarative import declarative_base
 from datetime import datetime
@@ -17,7 +17,7 @@ class User(Base):
     account_type = Column(String)
     
     sessions = relationship('ChatSession', back_populates='user')
-    pictures = relationship('UserPicture', back_populates='user')
+    
 
 class ChatSession(Base):
     __tablename__ = 'chat_session'
@@ -33,26 +33,29 @@ class ChatSession(Base):
 class Message(Base):
     __tablename__ = 'message'
     
-    message_id = Column(Integer, primary_key=True, nullable= False, nullable= False)
+    message_id = Column(Integer, primary_key=True, nullable= False)
     session_id = Column(Integer, ForeignKey('chat_session.session_id'))
     content = Column(String)
     is_bot = Column(Boolean)
     timestamp = Column(DateTime, default=datetime.utcnow)
     
     session = relationship('ChatSession', back_populates='messages')
+    pictures = relationship('UserPicture', back_populates='message')  # Use 'message', not 'messages'
 
 class UserPicture(Base):
     __tablename__ = 'user_picture'
     
     picture_id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('user.user_id'))
-    picture_data = Column(Binary)
+    picture_data = Column(String)
     upload_timestamp = Column(DateTime, default=datetime.utcnow)
     
     user = relationship('User', back_populates='pictures')
 
-# Replace 'sqlite:///your_database.db' with your actual database connection string
-engine = create_engine('sqlite:///your_database.db')
+
+SQLALCHEMY_DATABASE_URL = 'postgresql://postgresql:muhammad@localhost:5432/chatgpt-clone'
+
+engine = create_engine(SQLALCHEMY_DATABASE_URL)
 Base.metadata.create_all(engine)
 
 Session = sessionmaker(bind=engine)
@@ -60,14 +63,12 @@ session = Session()
 
 # Example of adding a user to the database
 new_user = User(
-    first_name='John',
-    last_name='Doe',
-    username='johndoe',
+    first_name='Ishaque',
+    last_name='Nizamai',
+    username='Nizamani123',
     password='hashed_password',
-    affiliation='Example University',
+    affiliation='Quantum leap',
     account_type='Standard'
 )
 session.add(new_user)
 session.commit()
-
-# You can similarly add data to other tables (ChatSession, Message, UserPicture)

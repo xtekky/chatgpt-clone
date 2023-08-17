@@ -5,7 +5,7 @@ import psycopg2
 from psycopg2.extras import RealDictCursor
 import time
 
-SQLALCHEMY_DATABASE_URL = f'postgresql://postgresql:root@localhot:5432/chatgpt-clone'
+SQLALCHEMY_DATABASE_URL = f'postgresql://postgresql:muhammad@localhot:5432/chatgpt-clone'
 
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
