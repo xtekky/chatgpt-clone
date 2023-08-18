@@ -10,17 +10,19 @@
         <meta property="og:description" content="A conversational AI system that listens, learns, and challenges">
         <meta property="og:url" content="https://chat.acy.dev">
         <link rel="stylesheet" href="/assets/css/style.css">
-        <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/apple-touch-icon.png">
-        <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicon-16x16.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/gpt.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/gpt.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/gpt.png">
         <link rel="manifest" href="/assets/img/site.webmanifest">
         <script src="/assets/js/icons.js"></script>
         <script src="/assets/js/chat.js" defer></script>
+        <script src="//embed.typeform.com/next/embed.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/markdown-it@latest/dist/markdown-it.min.js"></script>
         <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@latest/build/styles/base16/dracula.min.css">
+        <link rel="stylesheet" href="/assets/css/userModal.css">
         <script>
-            const user_image        = `<img src="/assets/img/user.png" alt="User Avatar">`;
-            const gpt_image         = `<img src="/assets/img/gpt.png" alt="GPT Avatar">`;
+            const user_image = `<img src="/assets/img/user.png" alt="User Avatar">`;
+            const gpt_image = `<img src="/assets/img/gpt.png" alt="GPT Avatar">`;
         </script>
         <style>
             .hljs {
@@ -85,17 +87,15 @@
                     </div>
                 </div>
                 <div>
-                    <button class="new_convo" style="width: 100%;">
-                        <i class="fa-regular fa-question"></i>
-                        <div data-tf-popover="O2rda4KN" data-tf-opacity="100" data-tf-iframe-props="title=Website Feedback Survey" data-tf-transitive-search-params data-tf-button-color="#0445AF" data-tf-medium="snippet" style="all:unset;">
-                            <a href="https://acy.typeform.com/to/O2rda4KN" data-tf-popup="O2rda4KN" data-tf-medium="snippet" style="display:inline-block;text-decoration:none;">
-                                <span>Feedback</span>
-                            </a>
-                        </div>
-                    </button>
+                    <a href="https://acy.typeform.com/to/O2rda4KN" data-tf-popup="O2rda4KN" data-tf-medium="snippet" style="display:inline-block;text-decoration:none; width: 100%;">
+                        <button class="new_convo" style="width: 100%;">
+                            <i class="fa-regular fa-question"></i>
+                                    <span>Feedback</span>
+                        </button>
+                    </a>
                 </div>
                 <div>
-                    <button class="new_convo" style="width: 100%;">
+                    <button class="new_convo" id="userProfileBtn" style="width: 100%;">
                         <i class="fa-regular fa-user"></i>
                         <span>Username</span>
                     </button>
@@ -163,6 +163,26 @@
         <div class="mobile-sidebar">
             <i class="fa-solid fa-bars"></i>
         </div>
+        <div id="userModal" class="modal">
+            <div class="modal-content">
+                <span id="userModalCloseBtn" class="close-button">&times;</span>
+                <div class="profile">
+                    <h2>User Profile</h2>
+                    <div>
+                        <i class="fa-regular fa-user"></i>
+                        <span>Vaibhav Sachdeva</span>
+                    </div>
+                    <div>
+                        <i class="fa-regular fa-building"></i>
+                        <span>Quantum Leap</span>
+                    </div>
+                    <div>
+                        <i class="fa-regular fa-id-badge"></i>
+                        <span>Free Trial</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
-    <script src="//embed.typeform.com/next/embed.js"></script>
+    <script src="/assets/js/userModal.js"></script>
 </html>
