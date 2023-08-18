@@ -110,11 +110,11 @@ Database Design:
 
    ### UserPicture Table: 
         picture_id (Primary Key) 
-        user_id (Foreign Key referencing User Table) 
+        message_id (Foreign Key referencing Message Table) 
         picture_data (Binary data of the picture) 
         upload_timestamp (Timestamp of when the picture was uploaded) 
         
 
 <br><br><br>
-![12erdiagram drawio](https://github.com/MuhammadNizamani/motivaion/assets/49721249/e3cd63f8-8079-46b5-a0ed-14a1f2237f4c)
+![ERD](https://github.com/Quantum-Leap-Labs/chatgpt-clone/assets/49721249/5c82322b-955c-4294-b566-e79070a842e6)
 
