@@ -14,3 +14,17 @@ SQLAlchemy==2.0.20
 typing_extensions==4.7.1
 urllib3==2.0.4
 Werkzeug==2.3.7
+cadquery==2.3.1
+cadquery-ocp==7.7.1
+casadi==3.6.3
+ezdxf==1.0.3
+h11==0.14.0
+multimethod==1.9.1
+nlopt==2.7.1
+nptyping==2.0.1
+numpy==1.25.2
+path==16.7.1
+pyparsing==3.1.1
+typish==1.9.3
+uvicorn==0.23.2
+
