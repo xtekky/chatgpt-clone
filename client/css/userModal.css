@@ -17,7 +17,8 @@
     margin: 15% auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 50%;
+    width: 30%;
+    height: 30%;
     box-shadow: 0px 0px 10px 0px #000;
 }
 
@@ -33,4 +34,13 @@
 .close-button:focus {
     text-decoration: none;
     cursor: pointer;
+}
+
+.profile {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: space-between;
+    height: 100%;
+    font-size: 1.3rem;
 }
