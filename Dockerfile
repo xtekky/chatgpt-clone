@@ -1,22 +1,32 @@
-# Build stage
-FROM python:3.8-alpine AS build
+FROM python:3.10.12-slim
+LABEL maintainer="Quantum Leap Labs Ltd."
+
+ENV PYTHONUNBUFFERED 1
+
+COPY ./requirements.txt /tmp/requirements.txt
 
 WORKDIR /app
 
-COPY requirements.txt requirements.txt
-RUN apk add --no-cache build-base && \
-    pip3 install --user --no-cache-dir -r requirements.txt
+# Install system dependencies
+# RUN apt-get update && \
+#     apt-get install -y --no-install-recommends build-essential libgl1-mesa-glx && \
+#     rm -rf /var/lib/apt/lists/*
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends libgl1
+
+# Create virtual environment and install python dependencies
+RUN python -m venv /venv && \
+    /venv/bin/pip install --upgrade pip && \
+    /venv/bin/pip install -r /tmp/requirements.txt && \
+    rm -rf /tmp
 
 COPY . .
 
-# Production stage
-FROM python:3.8-alpine AS production
+ENV BUILD_ENV=PROD
 
-WORKDIR /app
+ENV PATH="/venv/bin:$PATH"
 
-COPY --from=build /root/.local /root/.local
-COPY . .
+EXPOSE 5001
 
-ENV PATH=/root/.local/bin:$PATH
-
-CMD ["python3", "./run.py"]
+CMD ["python", "run.py"]

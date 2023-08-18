@@ -2,11 +2,16 @@ from server.app import app
 from server.website import Website
 from server.backend import Backend_Api
 from json import load
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 if __name__ == '__main__':
     config = load(open('config.json', 'r'))
     site_config = config['site_config']
+    site_config['debug'] = False if os.getenv('BUILD_ENV') == 'PROD' else True
 
     site = Website(app)
     for route in site.routes:
