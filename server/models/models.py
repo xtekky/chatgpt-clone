@@ -23,7 +23,7 @@ class ChatSession(Base):
     __tablename__ = 'chat_session'
     
     session_id = Column(Integer, primary_key=True, nullable= False)
-    user_id = Column(Integer, ForeignKey('user.user_id', ondelete="CASCADE"), nullable=False)
+    user_id = Column(Integer, ForeignKey('user.user_id', ondelete='SET NULL'), nullable=False)
     start_timestamp = Column(DateTime, default=datetime.utcnow)
     end_timestamp = Column(DateTime, nullable=True)
     
@@ -34,7 +34,7 @@ class Message(Base):
     __tablename__ = 'message'
     
     message_id = Column(Integer, primary_key=True, nullable= False)
-    session_id = Column(Integer, ForeignKey('chat_session.session_id', ondelete="CASCADE"), nullable=False)
+    session_id = Column(Integer, ForeignKey('chat_session.session_id', ondelete='SET NULL'), nullable=False)
     content = Column(String)
     is_bot = Column(Boolean)
     timestamp = Column(DateTime, default=datetime.utcnow)
@@ -47,11 +47,10 @@ class UserPicture(Base):
     __tablename__ = 'user_picture'
     
     picture_id = Column(Integer, primary_key=True)
-    # user_id = Column(Integer, ForeignKey('message.message_id', ondelete="CASCADE"))
     picture_data = Column(String)
     upload_timestamp = Column(DateTime, default=datetime.utcnow)
     
-    message_id = Column(Integer, ForeignKey('message.message_id', ondelete="CASCADE"), nullable=False)  # Foreign key to Message model
+    message_id = Column(Integer, ForeignKey('message.message_id', ondelete='SET NULL'), nullable=False)  # Foreign key to Message model
     message = relationship('Message', back_populates='pictures')
 
 SQLALCHEMY_DATABASE_URL = 'postgresql://postgres:muhammad@localhost:5432/chatgpt-clone'
