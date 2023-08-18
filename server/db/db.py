@@ -1,11 +1,11 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-import psycopg2
-from psycopg2.extras import RealDictCursor
-import time
+# import psycopg2
+# from psycopg2.extras import RealDictCursor
+# import time
 
-SQLALCHEMY_DATABASE_URL = f'postgresql://postgresql:muhammad@localhot:5432/chatgpt-clone'
+SQLALCHEMY_DATABASE_URL = 'postgresql://postgres:muhammad@localhost:5432/chatgpt-clone'
 
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
