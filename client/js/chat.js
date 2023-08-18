@@ -158,6 +158,7 @@ const ask_gpt = async (message) => {
 
       text += chunk;
 
+      console.log("Received chunk", chunk);
       // const objects         = chunk.match(/({.+?})/g);
 
       // try { if (JSON.parse(objects[0]).success === false) throw new Error(JSON.parse(objects[0]).error) } catch (e) {}
@@ -167,8 +168,13 @@ const ask_gpt = async (message) => {
       //     try { text += h2a(JSON.parse(object).content) } catch(t) { console.log(t); throw new Error(t)}
       // });
 
-      document.getElementById(`gpt_${window.token}`).innerHTML =
-        markdown.render(text);
+      if (text.startsWith(`<svg`)) {
+        console.log("SVG detected");
+        document.getElementById(`gpt_${window.token}`).innerHTML = `<div style="background: white;">${text}</div>`; // Render the SVG
+      } else {
+        document.getElementById(`gpt_${window.token}`).innerHTML =
+          markdown.render(text); // Render markdown-formatted response
+      }
       document.querySelectorAll(`code`).forEach((el) => {
         hljs.highlightElement(el);
       });
@@ -256,7 +262,7 @@ const show_option = async (conversation_id) => {
 
   conv.style.display = "none";
   yes.style.display = "block";
-  not.style.display = "block"; 
+  not.style.display = "block";
 }
 
 const hide_option = async (conversation_id) => {
@@ -266,14 +272,14 @@ const hide_option = async (conversation_id) => {
 
   conv.style.display = "block";
   yes.style.display = "none";
-  not.style.display = "none"; 
+  not.style.display = "none";
 }
 
 const delete_conversation = async (conversation_id) => {
   localStorage.removeItem(`conversation:${conversation_id}`);
 
   const conversation = document.getElementById(`convo-${conversation_id}`);
-    conversation.remove();
+  conversation.remove();
 
   if (window.conversation_id == conversation_id) {
     await new_conversation();
@@ -310,18 +316,16 @@ const load_conversation = async (conversation_id) => {
             <div class="message">
                 <div class="user">
                     ${item.role == "assistant" ? gpt_image : user_image}
-                    ${
-                      item.role == "assistant"
-                        ? `<i class="fa-regular fa-phone-arrow-down-left"></i>`
-                        : `<i class="fa-regular fa-phone-arrow-up-right"></i>`
-                    }
+                    ${item.role == "assistant"
+        ? `<i class="fa-regular fa-phone-arrow-down-left"></i>`
+        : `<i class="fa-regular fa-phone-arrow-up-right"></i>`
+      }
                 </div>
                 <div class="content">
-                    ${
-                      item.role == "assistant"
-                        ? markdown.render(item.content)
-                        : item.content
-                    }
+                    ${item.role == "assistant"
+        ? markdown.render(item.content)
+        : item.content
+      }
                 </div>
             </div>
         `;
@@ -466,12 +470,12 @@ window.onload = async () => {
     }
   }
 
-message_input.addEventListener(`keydown`, async (evt) => {
+  message_input.addEventListener(`keydown`, async (evt) => {
     if (prompt_lock) return;
     if (evt.keyCode === 13 && !evt.shiftKey) {
-        evt.preventDefault();
-        console.log('pressed enter');
-        await handle_ask();
+      evt.preventDefault();
+      console.log('pressed enter');
+      await handle_ask();
     } else {
       message_input.style.removeProperty("height");
       message_input.style.height = message_input.scrollHeight + 4 + "px";
