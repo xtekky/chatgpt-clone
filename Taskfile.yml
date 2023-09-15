@@ -55,10 +55,16 @@ tasks:
 
   test:
     cmds:
-      - doppler run --config test -- pytest
+      - pytest
+
+  checks:mypy:
+    cmds:
+      - mypy chatgpt_clone
+
   checks:pylint:
     cmds:
-      - 
+      - pylint --load-plugins pylint_django ./chatgpt_clone/
+
   checks:flake8:
     cmds:
       - flake8

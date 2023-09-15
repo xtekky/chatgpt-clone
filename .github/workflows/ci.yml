@@ -19,39 +19,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  linter:
+  python-checks:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code Repository
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-      # Consider using pre-commit.ci for open source project
-      - name: Run pre-commit
-        uses: pre-commit/action@v3.0.0
-
-  # With no caching at all the entire ci process takes 4m 30s to complete!
-  pytest:
-    runs-on: ubuntu-latest
-
-    services:
-      postgres:
-        image: postgres:14
-        ports:
-          - 5432:5432
-        env:
-          POSTGRES_PASSWORD: postgres
-
-    env:
-      POSTGRES_DB: 'chatgpt_clone_test'
-      POSTGRES_HOST: 'postgres'
-      POSTGRES_PASSWORD: 'chatgpt_clone_test'
-      POSTGRES_PORT: '5432'
-      POSTGRES_USER: 'chatgpt_clone_test'
-
     steps:
       - name: Checkout Code Repository
         uses: actions/checkout@v4
@@ -70,5 +39,42 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements/local.txt
 
+      - name: pylint
+        run: doppler run --fallback="./utility/doppler.fallback.json" --passphrase="test" -- task:pylint
+
+      - name: flake8
+        run: task checks:flake8
+
+      - name: mypy
+        run: doppler run --fallback="./utility/doppler.fallback.json" --passphrase="test" -- task:mypy
+
       - name: Test with pytest
         run: pytest
+
+  frontend-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.x
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20.x
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Prettier
+        run: npm run prettier
+
+      - name: ESLint
+        run: npm run lint
+  

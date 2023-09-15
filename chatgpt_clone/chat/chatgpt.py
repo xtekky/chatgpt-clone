@@ -1,3 +1,5 @@
+from typing import Callable
+
 import openai
 from django.conf import settings
 from duckduckgo_search import DDGS
@@ -14,7 +16,7 @@ def web_search(query):
     return results
 
 
-def chat(message, conversation, model, system_message, web_access=False) -> str:
+def chat(message, conversation, model, system_message, web_access=False) -> Callable:
     def stream(response):
         for chunk in response:
             content = chunk["choices"][0]["delta"].get("content")
@@ -30,7 +32,7 @@ def chat(message, conversation, model, system_message, web_access=False) -> str:
         ]
         search_messages += [
             "Current date: {datetime.now().strftime('%Y-%m-%d')",
-            "Instructions: Using the provided web search results, write a comprehensive reply to the next user query. Make sure to cite results using [[number](URL)] notation after the reference. If the provided search results refers to multiple subjects with the same name, write separate answers for each subject. Ignore your previous response if any.",  # noqa: E501
+            "Instructions: Using the provided web search results, write a comprehensive reply to the next user query. Make sure to cite results using [[number](URL)] notation after the reference. If the provided search results refers to multiple subjects with the same name, write separate answers for each subject. Ignore your previous response if any.",  # noqa: E501 pylint: disable=line-too-long
         ]
         messages.append({"role": "user", "content": "\n\n".join(search_messages)})
 

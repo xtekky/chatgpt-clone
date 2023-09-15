@@ -7,6 +7,7 @@ from chatgpt_clone.users.forms import UserAdminCreationForm
 from chatgpt_clone.users.models import User
 
 
+# pylint: disable=too-few-public-methods
 class TestUserAdminCreationForm:
     """
     Test class for all tests related to the UserAdminCreationForm

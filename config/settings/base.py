@@ -3,6 +3,7 @@ Base settings to build other settings files upon.
 """
 import os
 from pathlib import Path
+from typing import Any, Dict
 
 from .doppler import log_secrets
 
@@ -44,7 +45,7 @@ LOCALE_PATHS = [str(BASE_DIR / "locale")]
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 
-DATABASES = {
+DATABASES: Dict[str, Any] = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": os.environ["POSTGRES_DB"],
@@ -265,6 +266,6 @@ OPENAI_API_KEY = os.environ["OPENAI_API_KEY"]
 OPENAI_API_BASE_URL = os.environ["OPENAI_API_BASE_URL"]
 OPENAI_SYSTEM_MESSAGE = os.environ["OPENAI_SYSTEM_MESSAGE"]
 OPENAI_MODEL = os.environ["OPENAI_MODEL"]
-
+OPENAI_TEMPERATURE = os.environ["OPENAI_TEMPERATURE"]
 
 log_secrets()

@@ -32,6 +32,6 @@ def chat(request, conversation_id=None):
         model = settings.OPENAI_MODEL
         response = chatgpt.chat(message, conversation, model, system_message, web_access)
         return StreamingHttpResponse(response())
-    except Exception as e:
+    except Exception as e:  # pylint: disable=broad-exception-caught
         error_message = f"Sorry, an error occurred: {type(e).__name__} - {str(e)}"
         return HttpResponse(error_message, content_type="text/plain", status=500)
