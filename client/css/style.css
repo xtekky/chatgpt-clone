@@ -789,6 +789,10 @@ a:-webkit-any-link {
     --radio-color: green;
 }
 
+.color-picker input[type="radio"]#red {
+    --radio-color: #232323;
+}
+
 .color-picker input[type="radio"]#dark {
     --radio-color: #232323;
 }
@@ -812,6 +816,13 @@ a:-webkit-any-link {
     --clr-card-bg: hsl(109 50% 100%);
     --colour-3: hsl(109 50% 15%);
     --conversations: hsl(109 50% 25%);
+}
+
+.red {
+    --colour-1: hsl(0, 70%, 60%); 
+    --clr-card-bg: hsl(240, 10%, 5%); 
+    --colour-3: hsl(0, 0%, 90%); 
+    --conversations: hsl(0, 0%, 20%); 
 }
 
 .dark {
@@ -840,6 +851,13 @@ a:-webkit-any-link {
     --clr-card-bg: hsl(109 50% 100%);
     --colour-3: hsl(109 50% 15%);
     --conversations: hsl(109 50% 25%);
+}
+
+:root:has(#red:checked) {
+    --colour-1: hsl(0, 70%, 60%); 
+    --clr-card-bg: hsl(240, 10%, 5%); 
+    --colour-3: hsl(0, 0%, 90%); 
+    --conversations: hsl(0, 0%, 20%);
 }
 
 :root:has(#dark:checked) {
