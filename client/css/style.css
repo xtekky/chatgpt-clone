@@ -459,6 +459,41 @@ select {
     border: 1px dashed var(--conversations)
 }
 
+.clear_convo {
+    padding: 8px 12px;
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    background: transparent; 
+    border: 1px dashed var(--conversations);
+    border-radius: var(--border-radius-1);
+    width: 100%;
+    transition: border-style 0.3s;
+}
+
+.clear_convo button {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    background: transparent; 
+    border: none;
+    outline: none;
+    cursor: pointer;
+    color: var(--colour-3);
+    font-size: 14px;
+}
+
+.clear_convo:hover {
+    border-style: solid;
+}
+
+.clear_convo button span {
+    color: var(--colour-3);
+    font-size: 14px;
+}
+
 .bottom_buttons {
     width: 100%;
     display: flex;
