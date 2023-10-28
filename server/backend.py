@@ -1,11 +1,13 @@
 from json import dumps
-from time import time
+from time import time, sleep
 from flask import request
 from hashlib import sha256
 from datetime import datetime
 from requests import get
-from requests import post 
-from json     import loads
+from requests import post
+from orjson import loads
+import threading
+import weakref
 import os
 
 from server.config import special_instructions
@@ -17,6 +19,8 @@ class Backend_Api:
         self.openai_key = os.getenv("OPENAI_API_KEY") or config['openai_key']
         self.openai_api_base = os.getenv("OPENAI_API_BASE") or config['openai_api_base']
         self.proxy = config['proxy']
+        backend_config = config["backend_config"]
+        self.join_chunks = backend_config["join_chunks"]
         self.routes = {
             '/backend-api/v2/conversation': {
                 'function': self._conversation,
@@ -79,7 +83,7 @@ class Backend_Api:
             )
 
             if gpt_resp.status_code >= 400:
-                error_data =gpt_resp.json().get('error', {})
+                error_data = gpt_resp.json().get('error', {})
                 error_code = error_data.get('code', None)
                 error_message = error_data.get('message', "An error occurred")
                 return {
@@ -92,12 +96,12 @@ class Backend_Api:
             def stream():
                 for chunk in gpt_resp.iter_lines():
                     try:
-                        decoded_line = loads(chunk.decode("utf-8").split("data: ")[1])
-                        token = decoded_line["choices"][0]['delta'].get('content')
+                        if chunk:
+                            token = loads(chunk[6:])["choices"][0]["delta"].get("content")
 
-                        if token != None: 
-                            yield token
-                            
+                            if token is not None:
+                                yield token
+
                     except GeneratorExit:
                         break
 
@@ -105,7 +109,46 @@ class Backend_Api:
                         print(e)
                         print(e.__traceback__.tb_next)
                         continue
-                        
+
+            if self.join_chunks:
+                storage, lock = [], threading.Lock()
+
+                def storage_reader(storage: list, lock: threading.Lock):
+                    try:
+                        while True:
+                            if len(storage) > 0:
+                                lock.acquire()
+                                joined_chunk = "".join(storage)
+                                storage.clear()
+                                lock.release()
+                                yield joined_chunk
+                            else:
+                                sleep(0.05)
+                    except TypeError:
+                        lock.release()
+                        lock.acquire()
+                        joined_chunk = "".join(storage[:-1])
+                        storage.clear()
+                        lock.release()
+                        yield joined_chunk
+
+                def storage_writer(storage: list, lock: threading.Lock, weakref_storage_reader, read_from_generator):
+                    for chunk in read_from_generator:
+                        if weakref_storage_reader():
+                            lock.acquire()
+                            storage.append(chunk)
+                            lock.release()
+                        else:
+                            break
+                    lock.acquire()
+                    storage.append(1)
+                    lock.release()
+
+                result_stream = storage_reader(storage, lock)
+                threading.Thread(target=storage_writer,
+                                 args=(storage, lock, weakref.ref(result_stream), stream())).start()
+                return self.app.response_class(result_stream, mimetype='text/event-stream')
+
             return self.app.response_class(stream(), mimetype='text/event-stream')
 
         except Exception as e:
