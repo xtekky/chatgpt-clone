@@ -77,17 +77,52 @@ const ask_gpt = async (message) => {
     stop_generating.classList.remove(`stop_generating-hidden`);
 
     message_box.innerHTML += `
-            <div class="message">
-                <div class="user">
-                    ${user_image}
-                    <i class="fa-regular fa-phone-arrow-up-right"></i>
+            <div class="message-wrapper">
+                <div class="dropdown-message-func-buttons">
+                    <svg class="dropdown-icon" xmlns="http://www.w3.org/2000/svg" width="100" height="10">
+                        <text x="5" y="5" font-family="Arial" font-size="10" fill="black">...</text>
+                    </svg>
+                    <div class="message-func-buttons">
+                        <button class="button copy-button" onclick="copyFunction(this)">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="32.000000pt" height="32.000000pt" viewBox="0 0 32.000000 32.000000">
+                            <g transform="translate(0.000000,32.000000) scale(0.100000,-0.100000)"
+                            stroke="none">
+                            <path d="M40 180 l0 -100 35 0 c19 0 35 5 35 10 0 6 -11 10 -25 10 -25 0 -25
+                            1 -25 81 l0 81 70 -4 c52 -3 70 0 70 9 0 10 -22 13 -80 13 l-80 0 0 -100z"/>
+                            <path d="M120 140 l0 -100 80 0 80 0 0 100 0 100 -80 0 -80 0 0 -100z m140 0
+                            l0 -80 -60 0 -60 0 0 80 0 80 60 0 60 0 0 -80z"/>
+                            </g>
+                          </svg>
+                        </button>
+                        <button class="button delete-button" onclick="deleteFunction(this)">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="32.000000pt" height="32.000000pt" viewBox="0 0 32.000000 32.000000">
+                            <g transform="translate(0.000000,32.000000) scale(0.100000,-0.100000)"
+                            stroke="none">
+                            <path d="M100 273 l-35 -4 3 -102 c2 -56 5 -108 7 -115 4 -9 27 -12 87 -10
+                            l83 3 5 110 c3 61 5 111 5 111 0 5 -126 11 -155 7z m116 -23 c11 0 14 -21 14
+                            -95 l0 -95 -70 0 -70 0 0 94 0 95 28 4 c15 3 40 3 56 1 16 -2 35 -4 42 -4z"/>
+                            <path d="M110 155 c0 -30 5 -55 10 -55 6 0 10 25 10 55 0 30 -4 55 -10 55 -5
+                            0 -10 -25 -10 -55z"/>
+                            <path d="M150 155 c0 -30 5 -55 10 -55 6 0 10 25 10 55 0 30 -4 55 -10 55 -5
+                            0 -10 -25 -10 -55z"/>
+                            <path d="M190 155 c0 -30 5 -55 10 -55 6 0 10 25 10 55 0 30 -4 55 -10 55 -5
+                            0 -10 -25 -10 -55z"/>
+                            </g>
+                          </svg>
+                        </button>
+                    </div>
                 </div>
-                <div class="content" id="user_${token}"> 
-                    ${format(message)}
+                <div class="message">
+                    <div class="user">
+                        ${user_image}
+                        <i class="fa-regular fa-phone-arrow-up-right"></i>
+                    </div>
+                    <div class="content" id="user_${window.token}"> 
+                        ${format(message)}
+                    </div>
                 </div>
             </div>
         `;
-
     /* .replace(/(?:\r\n|\r|\n)/g, '<br>') */
 
     message_box.scrollTop = message_box.scrollHeight;
@@ -96,12 +131,62 @@ const ask_gpt = async (message) => {
     window.scrollTo(0, 0);
 
     message_box.innerHTML += `
-            <div class="message">
-                <div class="user">
-                    ${gpt_image} <i class="fa-regular fa-phone-arrow-down-left"></i>
+            <div class="message-wrapper">
+                <div class="dropdown-message-func-buttons">
+                    <svg class="dropdown-icon" xmlns="http://www.w3.org/2000/svg" width="100" height="10">
+                        <text x="5" y="5" font-family="Arial" font-size="10" fill="black">...</text>
+                    </svg>
+                    <div class="message-func-buttons">
+                        <button class="button copy-button" onclick="copyFunction(this)">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="32.000000pt" height="32.000000pt" viewBox="0 0 32.000000 32.000000">
+                            <g transform="translate(0.000000,32.000000) scale(0.100000,-0.100000)"
+                            stroke="none">
+                            <path d="M40 180 l0 -100 35 0 c19 0 35 5 35 10 0 6 -11 10 -25 10 -25 0 -25
+                            1 -25 81 l0 81 70 -4 c52 -3 70 0 70 9 0 10 -22 13 -80 13 l-80 0 0 -100z"/>
+                            <path d="M120 140 l0 -100 80 0 80 0 0 100 0 100 -80 0 -80 0 0 -100z m140 0
+                            l0 -80 -60 0 -60 0 0 80 0 80 60 0 60 0 0 -80z"/>
+                            </g>
+                          </svg>
+                        </button>
+                        <button class="button regenerate-button" onclick="regenerateFunction(this)">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="32.000000pt" height="32.000000pt" viewBox="0 0 32.000000 32.000000">
+                            <g transform="translate(0.000000,32.000000) scale(0.100000,-0.100000)"
+                            stroke="none">
+                            <path d="M115 271 c-28 -12 -70 -59 -61 -68 4 -4 15 2 24 13 37 47 94 57 133
+                            24 20 -16 21 -19 7 -20 -34 0 -18 -20 17 -20 33 0 35 2 35 35 0 19 -4 35 -10
+                            35 -5 0 -10 -7 -10 -17 0 -15 -2 -15 -19 1 -23 20 -87 30 -116 17z"/>
+                            <path d="M50 85 c0 -19 5 -35 10 -35 6 0 10 7 10 17 0 14 2 14 21 -3 15 -13
+                            36 -19 70 -19 41 0 53 5 81 32 17 18 29 36 24 40 -4 4 -15 -2 -24 -13 -33 -42
+                            -79 -54 -127 -32 -28 12 -33 28 -10 28 8 0 15 5 15 10 0 6 -16 10 -35 10 -33
+                            0 -35 -2 -35 -35z"/>
+                            </g>
+                          </svg>
+                        </button>
+                        <button class="button delete-button" onclick="deleteFunction(this)">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="32.000000pt" height="32.000000pt" viewBox="0 0 32.000000 32.000000">
+                            <g transform="translate(0.000000,32.000000) scale(0.100000,-0.100000)"
+                            stroke="none">
+                            <path d="M100 273 l-35 -4 3 -102 c2 -56 5 -108 7 -115 4 -9 27 -12 87 -10
+                            l83 3 5 110 c3 61 5 111 5 111 0 5 -126 11 -155 7z m116 -23 c11 0 14 -21 14
+                            -95 l0 -95 -70 0 -70 0 0 94 0 95 28 4 c15 3 40 3 56 1 16 -2 35 -4 42 -4z"/>
+                            <path d="M110 155 c0 -30 5 -55 10 -55 6 0 10 25 10 55 0 30 -4 55 -10 55 -5
+                            0 -10 -25 -10 -55z"/>
+                            <path d="M150 155 c0 -30 5 -55 10 -55 6 0 10 25 10 55 0 30 -4 55 -10 55 -5
+                            0 -10 -25 -10 -55z"/>
+                            <path d="M190 155 c0 -30 5 -55 10 -55 6 0 10 25 10 55 0 30 -4 55 -10 55 -5
+                            0 -10 -25 -10 -55z"/>
+                            </g>
+                          </svg>
+                        </button>
+                    </div>
                 </div>
-                <div class="content" id="gpt_${window.token}">
-                    <div id="cursor"></div>
+                <div class="message">
+                    <div class="user">
+                        ${gpt_image} <i class="fa-regular fa-phone-arrow-down-left"></i>
+                    </div>
+                    <div class="content" id="gpt_${window.token}">
+                        <div id="cursor"></div>
+                    </div>
                 </div>
             </div>
         `;
@@ -126,7 +211,7 @@ const ask_gpt = async (message) => {
         meta: {
           id: window.token,
           content: {
-            conversation: await get_conversation(window.conversation_id),
+            conversation: (await get_conversation(window.conversation_id)).map(({cmid, role, content}) => ({role, content})),
             internet_access: document.getElementById("switch").checked,
             content_type: "text",
             parts: [
@@ -139,7 +224,6 @@ const ask_gpt = async (message) => {
         },
       }),
     });
-
     const reader = response.body.getReader();
 
     while (true) {
@@ -187,8 +271,8 @@ const ask_gpt = async (message) => {
         "An error occured, please reload / refresh cache and try again.";
     }
 
-    add_message(window.conversation_id, "user", message);
-    add_message(window.conversation_id, "assistant", text);
+    add_message(window.conversation_id, "user", message, "user_" + window.token);
+    add_message(window.conversation_id, "assistant", text, "gpt_" + window.token);
 
     message_box.scrollTop = message_box.scrollHeight;
     await remove_cancel_button();
@@ -197,7 +281,7 @@ const ask_gpt = async (message) => {
     await load_conversations(20, 0);
     window.scrollTo(0, 0);
   } catch (e) {
-    add_message(window.conversation_id, "user", message);
+    add_message(window.conversation_id, "user", message, "user_" + window.token);
 
     message_box.scrollTop = message_box.scrollHeight;
     await remove_cancel_button();
@@ -214,13 +298,117 @@ const ask_gpt = async (message) => {
       let error_message = `oops ! something went wrong, please try again / reload. [stacktrace in console]`;
 
       document.getElementById(`gpt_${window.token}`).innerHTML = error_message;
-      add_message(window.conversation_id, "assistant", error_message);
+      add_message(window.conversation_id, "assistant", error_message, "gpt_" + window.token);
     } else {
       document.getElementById(`gpt_${window.token}`).innerHTML += ` [aborted]`;
-      add_message(window.conversation_id, "assistant", text + ` [aborted]`);
+      add_message(window.conversation_id, "assistant", text + ` [aborted]`, "gpt_" + window.token);
     }
 
     window.scrollTo(0, 0);
+  }
+};
+
+const ask_gpt_regenerate = async (contentElement) => {
+  let conversation = await JSON.parse(
+    localStorage.getItem(`conversation:${conversation_id}`)
+  );
+  let itemIndex = conversation.items.findIndex((el) => { return el.cmid === contentElement.id; });
+  let contents = conversation.items.slice(0, itemIndex);
+  contents = contents.map(({cmid, role, content}) => ({role, content}));
+  contentElement.innerHTML = `<div id="cursor"></div>`;
+  try {
+    window.controller = new AbortController();
+
+    jailbreak = document.getElementById("jailbreak");
+    model = document.getElementById("model");
+    prompt_lock = true;
+    window.text = ``;
+
+    stop_generating.classList.remove(`stop_generating-hidden`);
+    const response = await fetch(`/backend-api/v2/conversation`, {
+      method: `POST`,
+      signal: window.controller.signal,
+      headers: {
+        "content-type": `application/json`,
+        accept: `text/event-stream`,
+      },
+      body: JSON.stringify({
+        conversation_id: window.conversation_id,
+        action: `_ask`,
+        model: model.options[model.selectedIndex].value,
+        jailbreak: jailbreak.options[jailbreak.selectedIndex].value,
+        meta: {
+          id: contentElement.id.replace(/^gpt_|^user_/i, ''),
+          content: {
+            conversation: contents,
+            internet_access: document.getElementById("switch").checked,
+            content_type: "text",
+            parts: [
+              {
+                content: "",
+                role: "user",
+              },
+            ],
+          },
+        },
+      }),
+    });
+    const reader = response.body.getReader();
+    while (true) {
+      const {value, done} = await reader.read();
+      if (done) break;
+
+      chunk = new TextDecoder().decode(value);
+
+      if (
+          chunk.includes(
+              `<form id="challenge-form" action="/backend-api/v2/conversation?`
+          )
+      ) {
+        chunk = `cloudflare token expired, please refresh the page.`;
+      }
+
+      text += chunk;
+      document.getElementById(contentElement.id).innerHTML =
+          markdown.render(text);
+      document.querySelectorAll(`code`).forEach((el) => {
+        hljs.highlightElement(el);
+      });
+    }
+    if (
+        text.includes(
+            `instead. Maintaining this website and API costs a lot of money`
+        )
+    ) {
+      document.getElementById(`gpt_${window.token}`).innerHTML =
+          "An error occured, please reload / refresh cache and try again.";
+    }
+
+    await remove_cancel_button();
+    prompt_lock = false;
+    await load_conversations(20, 0);
+    conversation.items[itemIndex].content = text;
+    localStorage.setItem(`conversation:${conversation_id}`, JSON.stringify(conversation));
+  } catch (e) {
+    await remove_cancel_button();
+    prompt_lock = false;
+    await load_conversations(20, 0);
+    console.log(e);
+
+    let cursorDiv = document.getElementById(`cursor`);
+    if (cursorDiv) cursorDiv.parentNode.removeChild(cursorDiv);
+
+    if (e.name != `AbortError`) {
+      let error_message = `oops ! something went wrong, please try again / reload. [stacktrace in console]`;
+
+      contentElement.innerHTML = error_message;
+      conversation.items[itemIndex].content = error_message;
+      localStorage.setItem(`conversation:${conversation_id}`, JSON.stringify(conversation));
+    } else {
+      contentElement.innerHTML += ` [aborted]`;
+      conversation.items[itemIndex].content = text + ` [aborted]`;
+      localStorage.setItem(`conversation:${conversation_id}`, JSON.stringify(conversation));
+    }
   }
 };
 
@@ -256,7 +444,7 @@ const show_option = async (conversation_id) => {
 
   conv.style.display = "none";
   yes.style.display = "block";
-  not.style.display = "block"; 
+  not.style.display = "block";
 }
 
 const hide_option = async (conversation_id) => {
@@ -266,8 +454,65 @@ const hide_option = async (conversation_id) => {
 
   conv.style.display = "block";
   yes.style.display = "none";
-  not.style.display = "none"; 
+  not.style.display = "none";
 }
+
+const getMsgWrapperByButton = (button) => {
+  let msgFuncBtnsDiv = button.parentElement;
+  let dropdown = msgFuncBtnsDiv.parentElement;
+  return dropdown.parentElement;
+}
+
+const getMsgContentByButton = (senderBtn) => {
+  let msgWrapper = getMsgWrapperByButton(senderBtn);
+  return msgWrapper.querySelector(".message").querySelector(".content");
+};
+
+const isInGenerating = () => { return !stop_generating.classList.contains("stop_generating-hidden"); };
+
+const copyFunction = async (button) => {
+  let contentElement = getMsgContentByButton(button);
+  let conversation = await JSON.parse(
+    localStorage.getItem(`conversation:${conversation_id}`)
+  );
+  let convItems = conversation.items;
+  let itemIndex = convItems.findIndex((el) => { return el.cmid === contentElement.id; });
+  let text = convItems[itemIndex].content;
+
+  await navigator.clipboard.writeText(text);
+};
+
+const regenerateFunction = async (button) => {
+  console.log(stop_generating.classList);
+  console.log(isInGenerating());
+  if (isInGenerating()) {
+    return;
+  }
+  let msgWrapper = getMsgWrapperByButton(button);
+  let contentElement = msgWrapper.querySelector(".message").querySelector(".content");
+  let conversation = await JSON.parse(
+    localStorage.getItem(`conversation:${conversation_id}`)
+  );
+  await ask_gpt_regenerate(contentElement);
+};
+
+const deleteFunction = async (button) => {
+  if (isInGenerating()) {
+    return;
+  }
+  let msgWrapper = getMsgWrapperByButton(button);
+  let contentElement = getMsgContentByButton(button);
+  let conversation = await JSON.parse(
+    localStorage.getItem(`conversation:${conversation_id}`)
+  );
+  let convItems = conversation.items;
+  let itemIndex = convItems.findIndex((el) => { return el.cmid === contentElement.id; });
+  if (itemIndex !== -1) {
+    convItems.splice(itemIndex, 1);
+    localStorage.setItem(`conversation:${conversation_id}`, JSON.stringify(conversation));
+    msgWrapper.remove();
+  }
+};
 
 const delete_conversation = async (conversation_id) => {
   localStorage.removeItem(`conversation:${conversation_id}`);
@@ -307,21 +552,73 @@ const load_conversation = async (conversation_id) => {
 
   for (item of conversation.items) {
     message_box.innerHTML += `
-            <div class="message">
-                <div class="user">
-                    ${item.role == "assistant" ? gpt_image : user_image}
-                    ${
-                      item.role == "assistant"
-                        ? `<i class="fa-regular fa-phone-arrow-down-left"></i>`
-                        : `<i class="fa-regular fa-phone-arrow-up-right"></i>`
-                    }
+            <div class="message-wrapper">
+                <div class="dropdown-message-func-buttons">
+                    <svg class="dropdown-icon" xmlns="http://www.w3.org/2000/svg" width="100" height="10">
+                        <text x="5" y="5" font-family="Arial" font-size="10" fill="black">...</text>
+                    </svg>
+                    <div class="message-func-buttons">
+                        <button class="button copy-button" onclick="copyFunction(this)">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="32.000000pt" height="32.000000pt" viewBox="0 0 32.000000 32.000000">
+                            <g transform="translate(0.000000,32.000000) scale(0.100000,-0.100000)"
+                            stroke="none">
+                            <path d="M40 180 l0 -100 35 0 c19 0 35 5 35 10 0 6 -11 10 -25 10 -25 0 -25
+                            1 -25 81 l0 81 70 -4 c52 -3 70 0 70 9 0 10 -22 13 -80 13 l-80 0 0 -100z"/>
+                            <path d="M120 140 l0 -100 80 0 80 0 0 100 0 100 -80 0 -80 0 0 -100z m140 0
+                            l0 -80 -60 0 -60 0 0 80 0 80 60 0 60 0 0 -80z"/>
+                            </g>
+                          </svg>
+                        </button>
+                        ${item.role == "assistant" ? `
+                        <button class="button regenerate-button" onclick="regenerateFunction(this)">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="32.000000pt" height="32.000000pt" viewBox="0 0 32.000000 32.000000">
+                            <g transform="translate(0.000000,32.000000) scale(0.100000,-0.100000)"
+                            stroke="none">
+                            <path d="M115 271 c-28 -12 -70 -59 -61 -68 4 -4 15 2 24 13 37 47 94 57 133
+                            24 20 -16 21 -19 7 -20 -34 0 -18 -20 17 -20 33 0 35 2 35 35 0 19 -4 35 -10
+                            35 -5 0 -10 -7 -10 -17 0 -15 -2 -15 -19 1 -23 20 -87 30 -116 17z"/>
+                            <path d="M50 85 c0 -19 5 -35 10 -35 6 0 10 7 10 17 0 14 2 14 21 -3 15 -13
+                            36 -19 70 -19 41 0 53 5 81 32 17 18 29 36 24 40 -4 4 -15 -2 -24 -13 -33 -42
+                            -79 -54 -127 -32 -28 12 -33 28 -10 28 8 0 15 5 15 10 0 6 -16 10 -35 10 -33
+                            0 -35 -2 -35 -35z"/>
+                            </g>
+                          </svg>
+                        </button>` : ``
+                        }
+                        <button class="button delete-button" onclick="deleteFunction(this)">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="32.000000pt" height="32.000000pt" viewBox="0 0 32.000000 32.000000">
+                            <g transform="translate(0.000000,32.000000) scale(0.100000,-0.100000)"
+                            stroke="none">
+                            <path d="M100 273 l-35 -4 3 -102 c2 -56 5 -108 7 -115 4 -9 27 -12 87 -10
+                            l83 3 5 110 c3 61 5 111 5 111 0 5 -126 11 -155 7z m116 -23 c11 0 14 -21 14
+                            -95 l0 -95 -70 0 -70 0 0 94 0 95 28 4 c15 3 40 3 56 1 16 -2 35 -4 42 -4z"/>
+                            <path d="M110 155 c0 -30 5 -55 10 -55 6 0 10 25 10 55 0 30 -4 55 -10 55 -5
+                            0 -10 -25 -10 -55z"/>
+                            <path d="M150 155 c0 -30 5 -55 10 -55 6 0 10 25 10 55 0 30 -4 55 -10 55 -5
+                            0 -10 -25 -10 -55z"/>
+                            <path d="M190 155 c0 -30 5 -55 10 -55 6 0 10 25 10 55 0 30 -4 55 -10 55 -5
+                            0 -10 -25 -10 -55z"/>
+                            </g>
+                          </svg>
+                        </button>
+                    </div>
                 </div>
-                <div class="content">
-                    ${
-                      item.role == "assistant"
-                        ? markdown.render(item.content)
-                        : item.content
-                    }
+                <div class="message">
+                    <div class="user">
+                        ${item.role == "assistant" ? gpt_image : user_image}
+                        ${
+                          item.role == "assistant"
+                            ? `<i class="fa-regular fa-phone-arrow-down-left"></i>`
+                            : `<i class="fa-regular fa-phone-arrow-up-right"></i>`
+                        }
+                    </div>
+                    <div class="content" id=${item.cmid}>
+                        ${
+                          item.role == "assistant"
+                            ? markdown.render(item.content)
+                            : item.content
+                        }
+                    </div>
                 </div>
             </div>
         `;
@@ -358,12 +655,13 @@ const add_conversation = async (conversation_id, title) => {
   }
 };
 
-const add_message = async (conversation_id, role, content) => {
+const add_message = async (conversation_id, role, content, conversation_message_id) => {
   before_adding = JSON.parse(
     localStorage.getItem(`conversation:${conversation_id}`)
   );
 
   before_adding.items.push({
+    cmid: conversation_message_id,
     role: role,
     content: content,
   });
