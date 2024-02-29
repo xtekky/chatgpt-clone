@@ -4,6 +4,9 @@
         "port" : 1338,
         "debug": false
     },
+    "backend_config": {
+        "join_chunks": true
+    },
     "openai_key": "sk-...",
 
     "openai_api_base": "https://api.openai.com",

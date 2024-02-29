@@ -190,13 +190,13 @@ body {
 }
 
 .message {
-
     width: 100%;
     overflow-wrap: break-word;
     display: flex;
     gap: var(--section-gap);
     padding: var(--section-gap);
     padding-bottom: 0;
+    padding-top: 5px;
 }
 
 .message:last-child {
@@ -711,6 +711,57 @@ a:-webkit-any-link {
     position: absolute;
     white-space: nowrap;
     width: 1px;
+}
+
+.content table {
+    border-collapse: collapse;
+}
+
+.content th, .content td {
+  border: 1px solid var(--colour-3);
+  padding: 2px;
+}
+
+.copy-button, .regenerate-button, .delete-button {
+    background-color: var(--colour-1);
+    border-radius: var(--border-radius-1);
+    backdrop-filter: blur(20px);
+}
+
+.copy-button svg, .regenerate-button svg, .delete-button svg {
+    width: 24px;
+    height: 24px;
+    fill: var(--colour-3);
+}
+
+.dropdown-icon {
+    width: 32px;
+    height: 10px;
+    color: var(--colour-3);
+}
+
+.dropdown-icon text {
+    fill: var(--colour-3);
+    font-size: 24px;
+    width: 32px;
+    height: 32px;
+}
+
+.dropdown-message-func-buttons {
+    float: right;
+    display: block;
+    padding-right: var(--section-gap);
+    padding-top: var(--section-gap);
+}
+
+.message-func-buttons {
+    display: none;
+    position: absolute;
+}
+
+.dropdown-message-func-buttons:hover .message-func-buttons {
+    display: block;
+    z-index: 2;
 }
 
 
