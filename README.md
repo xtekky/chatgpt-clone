@@ -82,3 +82,28 @@ The easiest way to run ChatGPT Clone is by using docker
 docker-compose up
 ```
 
+### Kubernetes
+
+1. Run `kubectl apply -f kubernetes/`. It will create a deployment and ClusterIP Ingress in the namespace "chatgpt-clone"
+2. Create a secret containing your OPENAI-API-TOKEN with: `kubectl create secret generic openai-api-key --from-literal=openai-api-key=[YOUR_OPENAI_TOKEN] -n chatgpt-clone`
+3. Either change the service to load balancer or ingress (don't forget to password protect it!!), or port-forward it to your local machine: `kubectl port-forward deployment/chatgpt-clone 1338:1338 -n chatgpt-clone`
+
+#### Kubernetes: (optional) Hosting at a domain (ingress)
+
+If you want to host the app at a domain follow these steps:
+
+1. Install - if you haven't already - the nginx ingress 
+```
+helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx
+--namespace ingress-nginx
+--create-namespace
+```
+2. Create a basic auth secret which will password protect the app
+    - `htpasswd -c auth user` (you might need _apt-get install apache2-utils_)
+    - Enter your password
+    - This creates a file "auth"
+3. "Submit" the password as secret to Kubernetes with: 
+    - `kubectl create secret generic basic-auth --from-file=auth -n chatgpt-clone`
+4. Insert your domain in the "kubernetes/nginxingress/chatgpt-clone-ingress.yaml" file.
+5. Point your matching domain to your K8s IP
+6. `kubectl apply -f kubernetes/nginxingress/`
