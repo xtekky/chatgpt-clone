@@ -31,7 +31,7 @@ class Backend_Api:
             _conversation = request.json['meta']['content']['conversation']
             prompt = request.json['meta']['content']['parts'][0]
             current_date = datetime.now().strftime("%Y-%m-%d")
-            system_message = f'You are ChatGPT also known as ChatGPT, a large language model trained by OpenAI. Strictly follow the users instructions. Knowledge cutoff: 2021-09-01 Current date: {current_date}'
+            system_message = f'You are ChatGPT also known as ChatGPT, a large language model trained by OpenAI. Strictly follow the users instructions. Current date: {current_date}'
 
             extra = []
             if internet_access:
