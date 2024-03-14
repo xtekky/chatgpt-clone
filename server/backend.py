@@ -16,6 +16,7 @@ class Backend_Api:
         self.app = app
         self.openai_key = os.getenv("OPENAI_API_KEY") or config['openai_key']
         self.openai_api_base = os.getenv("OPENAI_API_BASE") or config['openai_api_base']
+        self.proxy = config['proxy']
         self.routes = {
             '/backend-api/v2/conversation': {
                 'function': self._conversation,
@@ -55,12 +56,38 @@ class Backend_Api:
                 _conversation + [prompt]
 
             url = f"{self.openai_api_base}/v1/chat/completions"
-            gpt_resp = post(url,
-                headers = {'Authorization': 'Bearer %s' % self.openai_key}, 
+
+            proxies = None
+            if self.proxy['enable']:
+                proxies = {
+                    'http': self.proxy['http'],
+                    'https': self.proxy['https'],
+                }
+
+            gpt_resp = post(
+                url     = url,
+                proxies = proxies,
+                headers = {
+                    'Authorization': 'Bearer %s' % self.openai_key
+                }, 
                 json    = {
                     'model'             : request.json['model'], 
                     'messages'          : conversation,
-                    'stream'            : True}, stream = True)
+                    'stream'            : True
+                },
+                stream  = True
+            )
+
+            if gpt_resp.status_code >= 400:
+                error_data =gpt_resp.json().get('error', {})
+                error_code = error_data.get('code', None)
+                error_message = error_data.get('message', "An error occurred")
+                return {
+                    'successs': False,
+                    'error_code': error_code,
+                    'message': error_message,
+                    'status_code': gpt_resp.status_code
+                }, gpt_resp.status_code
 
             def stream():
                 for chunk in gpt_resp.iter_lines():

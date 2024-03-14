@@ -14,6 +14,11 @@ let prompt_lock = false;
 
 hljs.addPlugin(new CopyButtonPlugin());
 
+function resizeTextarea(textarea) {
+  textarea.style.height = '80px';
+  textarea.style.height = Math.min(textarea.scrollHeight, 200) + 'px';
+}
+
 const format = (text) => {
   return text.replace(/(?:\r\n|\r|\n)/g, "<br>");
 };
