@@ -106,7 +106,9 @@ class Backend_Api:
                         print(e.__traceback__.tb_next)
                         continue
                         
-            return self.app.response_class(stream(), mimetype='text/event-stream')
+            resp = self.app.response_class(stream(), mimetype='text/event-stream')
+            resp.headers['X-Accel-Buffering'] = 'no'
+            return resp
 
         except Exception as e:
             print(e)
